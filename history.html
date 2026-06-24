@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Submissions - Student Feedback System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                <span><h2>CampusPulse</h2></span>
+            </div>
+            <div class="nav-right">
+                <span class="welcome-text">Welcome, <strong id="studentName">Student</strong></span>
+                <button class="logout-btn" onclick="window.location.href='home.html'">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    </svg>
+                    Home
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>My Submissions</h1>
+                <p>View and track all your feedback submissions</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-cards">
+                <div class="stat-card-small">
+                    <div class="stat-icon-small" style="background: rgba(76, 175, 80, 0.2);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#4caf50" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="stat-value-small" id="totalSubmissions">0</div>
+                        <div class="stat-label-small">Total Submissions</div>
+                    </div>
+                </div>
+
+                <div class="stat-card-small">
+                    <div class="stat-icon-small" style="background: rgba(76, 175, 80, 0.2);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#4caf50" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="stat-value-small" id="positiveCount">0</div>
+                        <div class="stat-label-small">Positive</div>
+                    </div>
+                </div>
+
+                <div class="stat-card-small">
+                    <div class="stat-icon-small" style="background: rgba(255, 152, 0, 0.2);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="8" y1="15" x2="16" y2="15"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="stat-value-small" id="neutralCount">0</div>
+                        <div class="stat-label-small">Neutral</div>
+                    </div>
+                </div>
+
+                <div class="stat-card-small">
+                    <div class="stat-icon-small" style="background: rgba(244, 67, 54, 0.2);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#f44336" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M16 16s-1.5-2-4-2-4 2-4 2"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="stat-value-small" id="negativeCount">0</div>
+                        <div class="stat-label-small">Negative</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Options -->
+            <div class="filter-section">
+                <select id="filterCategory" class="filter-select">
+                    <option value="all">All Categories</option>
+                    <option value="Teaching Quality">Teaching Quality</option>
+                    <option value="Course Content">Course Content</option>
+                    <option value="Teaching Methods">Teaching Methods</option>
+                    <option value="Lab Facilities">Lab Facilities</option>
+                    <option value="Study Materials">Study Materials</option>
+                    <option value="Assessment">Assessment</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <select id="filterSentiment" class="filter-select">
+                    <option value="all">All Sentiments</option>
+                    <option value="positive">Positive</option>
+                    <option value="neutral">Neutral</option>
+                    <option value="negative">Negative</option>
+                </select>
+            </div>
+
+            <!-- Submissions List -->
+            <div id="submissionsList" class="submissions-list">
+                <!-- Will be populated by JavaScript -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                <h3>No Submissions Yet</h3>
+                <p>You haven't submitted any feedback yet. Start by submitting your first feedback!</p>
+                <button onclick="window.location.href='feedback.html'" class="btn-primary">Submit Feedback</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let allSubmissions = [];
+
+        window.onload = function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            if (!currentUser.role || currentUser.role !== 'student') {
+                alert('Please login first!');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            document.getElementById('studentName').textContent = currentUser.name || 'Student';
+            loadSubmissions();
+        };
+
+        function loadSubmissions() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+            allSubmissions = feedbacks.filter(f => f.studentEmail === currentUser.email);
+
+            if (allSubmissions.length === 0) {
+                document.getElementById('emptyState').style.display = 'flex';
+                document.getElementById('submissionsList').style.display = 'none';
+                return;
+            }
+
+            updateStats();
+            displaySubmissions(allSubmissions);
+        }
+
+        function updateStats() {
+            document.getElementById('totalSubmissions').textContent = allSubmissions.length;
+            document.getElementById('positiveCount').textContent = allSubmissions.filter(f => f.sentiment === 'positive').length;
+            document.getElementById('neutralCount').textContent = allSubmissions.filter(f => f.sentiment === 'neutral').length;
+            document.getElementById('negativeCount').textContent = allSubmissions.filter(f => f.sentiment === 'negative').length;
+        }
+
+        function displaySubmissions(submissions) {
+            const listDiv = document.getElementById('submissionsList');
+            
+            if (submissions.length === 0) {
+                listDiv.innerHTML = '<div class="no-results">No submissions match your filters</div>';
+                return;
+            }
+
+            listDiv.innerHTML = submissions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).map(submission => `
+                <div class="submission-card">
+                    <div class="submission-header">
+                        <div class="submission-info">
+                            <h3>${submission.subjectName}</h3>
+                            <p class="submission-faculty">Faculty: ${submission.facultyName}</p>
+                        </div>
+                        <div class="submission-meta">
+                            <span class="sentiment-badge ${submission.sentiment}">${submission.sentiment}</span>
+                            <div class="submission-rating">${'⭐'.repeat(submission.rating)}</div>
+                        </div>
+                    </div>
+                    <div class="submission-body">
+                        <div class="submission-category">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 7h10v10H7z"/>
+                            </svg>
+                            ${submission.category}
+                        </div>
+                        <p class="submission-text">${submission.feedback}</p>
+                        <div class="submission-footer">
+                            <span class="submission-usn">USN: ${submission.usn}</span>
+                            <span class="submission-date">${new Date(submission.timestamp).toLocaleString()}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter functionality
+        document.getElementById('filterCategory').addEventListener('change', applyFilters);
+        document.getElementById('filterSentiment').addEventListener('change', applyFilters);
+
+        function applyFilters() {
+            const category = document.getElementById('filterCategory').value;
+            const sentiment = document.getElementById('filterSentiment').value;
+
+            let filtered = allSubmissions;
+
+            if (category !== 'all') {
+                filtered = filtered.filter(f => f.category === category);
+            }
+
+            if (sentiment !== 'all') {
+                filtered = filtered.filter(f => f.sentiment === sentiment);
+            }
+
+            displaySubmissions(filtered);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Feedback System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                </div>
+                <h1>Administrator Login</h1>
+                <p>Secure access for administrators only</p>
+            </div>
+
+            <form id="adminLoginForm" class="login-form">
+                <div class="form-group">
+                    <label for="adminUsername">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        Username
+                    </label>
+                    <input type="text" id="adminUsername" placeholder="Enter admin username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="adminPassword">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        Password
+                    </label>
+                    <input type="password" id="adminPassword" placeholder="Enter admin password" required>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <span>Login</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                        <polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                </button>
+
+                <div class="login-footer">
+                    <p style="font-size: 13px; color: rgba(255,255,255,0.5);"> </p>
+                    <button type="button" class="back-btn" onclick="window.location.href='index.html'">← Back to Home</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+
+            // Admin credentials (hardcoded for security)
+            if (username === 'admin' && password === 'admin123') {
+                localStorage.setItem('currentUser', JSON.stringify({ 
+                    name: 'Administrator', 
+                    role: 'admin' 
+                }));
+                alert('Login Successful! Welcome Administrator');
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('Invalid admin credentials!');
+            }
+        });
+    </script>
+</body>
+</html>
