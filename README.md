@@ -39,7 +39,6 @@ IWP MINI PROJECT/
 ├── dashboard.html        # Admin analytics dashboard
 ├── styles.css            # Shared stylesheet (dark theme)
 ├── localstorage-viewer.html  # Debug utility to inspect localStorage data
-└── ppt.html              # Project presentation slide
 ```
 
 ---
