@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Home - Feedback System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                <span><h2>CampusPulse</h2></span>
+            </div>
+            <div class="nav-right">
+                <span class="welcome-text">Welcome, <strong id="studentName">Student</strong></span>
+                <button class="logout-btn" onclick="logout()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Your Voice Matters!</h1>
+            <p>Help us improve your educational experience by sharing your valuable feedback</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalSubmissions">0</div>
+                    <div class="stat-label">Your Submissions</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">AI</div>
+                    <div class="stat-label">Powered Analysis</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Available</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Action Cards -->
+            <div class="cards-grid">
+                <!-- Submit Feedback Card -->
+                <div class="action-card primary-card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </div>
+                    <h3>Submit Feedback</h3>
+                    <p>Share your thoughts about courses, teaching, facilities, and more</p>
+                    <button class="card-btn" onclick="window.location.href='feedback.html'">
+                        Submit Now
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- View History Card -->
+                <div class="action-card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 3h18v18H3z"/>
+                            <path d="M3 9h18"/>
+                            <path d="M9 21V9"/>
+                        </svg>
+                    </div>
+                    <h3>My Submissions</h3>
+                    <p>View your previous feedback submissions and their analysis</p>
+                    <button class="card-btn" onclick="window.location.href='history.html'">
+                        View History
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Profile Card -->
+                <div class="action-card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                    </div>
+                    <h3>My Profile</h3>
+                    <p>Update your personal information and preferences</p>
+                    <button class="card-btn" onclick="window.location.href='profile.html'">
+                        View Profile
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Info Section -->
+            <div class="info-section">
+                <h2>How It Works</h2>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h4>Submit Feedback</h4>
+                        <p>Fill out a simple form about your experience</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h4>AI Analysis</h4>
+                        <p>Our system analyzes sentiment automatically</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h4>Insights Generated</h4>
+                        <p>Administrators receive actionable insights</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h4>Improvements Made</h4>
+                        <p>Your feedback drives positive changes</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="recent-activity">
+                <h2>Recent Activity</h2>
+                <div id="recentActivity" class="activity-list">
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                        <p>No feedback submitted yet. Start by submitting your first feedback!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Student Feedback System. All rights reserved.</p>
+            <p>Powered by AI Sentiment Analysis</p>
+        </div>
+    </footer>
+
+    <script>
+        // Check if user is logged in
+        window.onload = function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            if (!currentUser.role || currentUser.role !== 'student') {
+                alert('Please login first!');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Display student name
+            document.getElementById('studentName').textContent = currentUser.name || 'Student';
+
+            // Load student's submissions count
+            loadSubmissionsCount();
+            loadRecentActivity();
+        };
+
+        function loadSubmissionsCount() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+            const userFeedbacks = feedbacks.filter(f => f.studentEmail === currentUser.email);
+            document.getElementById('totalSubmissions').textContent = userFeedbacks.length;
+        }
+
+        function loadRecentActivity() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+            const userFeedbacks = feedbacks
+                .filter(f => f.studentEmail === currentUser.email)
+                .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                .slice(0, 5);
+
+            const activityDiv = document.getElementById('recentActivity');
+
+            if (userFeedbacks.length === 0) {
+                return; // Keep empty state
+            }
+
+            activityDiv.innerHTML = userFeedbacks.map(feedback => `
+                <div class="activity-item">
+                    <div class="activity-icon ${feedback.sentiment}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </div>
+                    <div class="activity-content">
+                        <h4>${feedback.category}</h4>
+                        <p>${feedback.feedback.substring(0, 100)}${feedback.feedback.length > 100 ? '...' : ''}</p>
+                        <div class="activity-meta">
+                            <span class="sentiment-badge ${feedback.sentiment}">${feedback.sentiment}</span>
+                            <span class="activity-date">${new Date(feedback.timestamp).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

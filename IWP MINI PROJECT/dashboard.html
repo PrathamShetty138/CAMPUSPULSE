@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Student Feedback System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                <span>Admin Dashboard</span>
+            </div>
+            <div class="nav-right">
+                <span class="welcome-text">Welcome, <strong>Administrator</strong></span>
+                <button class="logout-btn" onclick="logout()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard -->
+    <main class="dashboard-main">
+        <div class="dashboard-container">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <div>
+                    <h1>Analytics Dashboard</h1>
+                    <p>Real-time insights from student feedback</p>
+                </div>
+                <div class="dashboard-actions">
+                    <button class="btn-export" onclick="exportData()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Export CSV
+                    </button>
+                    <button class="btn-refresh" onclick="loadDashboard()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10"/>
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                        </svg>
+                        Refresh
+                    </button>
+                </div>
+            </div>
+
+            <!-- Overview Stats -->
+            <div class="overview-stats">
+                <div class="overview-card">
+                    <div class="overview-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </div>
+                    <div class="overview-content">
+                        <div class="overview-value" id="totalFeedbacks">0</div>
+                        <div class="overview-label">Total Feedbacks</div>
+                    </div>
+                </div>
+
+                <div class="overview-card">
+                    <div class="overview-icon" style="background: linear-gradient(135deg, #4caf50, #66bb6a);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                        </svg>
+                    </div>
+                    <div class="overview-content">
+                        <div class="overview-value" id="positiveFeedbacks">0</div>
+                        <div class="overview-label">Positive</div>
+                        <div class="overview-percentage" id="positivePercentage">0%</div>
+                    </div>
+                </div>
+
+                <div class="overview-card">
+                    <div class="overview-icon" style="background: linear-gradient(135deg, #ff9800, #ffa726);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="8" y1="15" x2="16" y2="15"/>
+                        </svg>
+                    </div>
+                    <div class="overview-content">
+                        <div class="overview-value" id="neutralFeedbacks">0</div>
+                        <div class="overview-label">Neutral</div>
+                        <div class="overview-percentage" id="neutralPercentage">0%</div>
+                    </div>
+                </div>
+
+                <div class="overview-card">
+                    <div class="overview-icon" style="background: linear-gradient(135deg, #f44336, #e57373);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M16 16s-1.5-2-4-2-4 2-4 2"/>
+                        </svg>
+                    </div>
+                    <div class="overview-content">
+                        <div class="overview-value" id="negativeFeedbacks">0</div>
+                        <div class="overview-label">Negative</div>
+                        <div class="overview-percentage" id="negativePercentage">0%</div>
+                    </div>
+                </div>
+
+                <div class="overview-card">
+                    <div class="overview-icon" style="background: linear-gradient(135deg, #ffd700, #ffed4e);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                        </svg>
+                    </div>
+                    <div class="overview-content">
+                        <div class="overview-value" id="averageRating">0.0</div>
+                        <div class="overview-label">Average Rating</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Grid -->
+            <div class="charts-grid">
+                <!-- Sentiment Distribution -->
+                <div class="chart-card">
+                    <h3>Sentiment Distribution</h3>
+                    <div class="chart-content">
+                        <canvas id="sentimentChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Rating Distribution -->
+                <div class="chart-card">
+                    <h3>Rating Distribution</h3>
+                    <div class="chart-content">
+                        <div id="ratingBars" class="rating-bars-chart"></div>
+                    </div>
+                </div>
+
+                <!-- Category Breakdown -->
+                <div class="chart-card full-width">
+                    <h3>Feedback by Category</h3>
+                    <div class="chart-content">
+                        <div id="categoryChart" class="category-bars"></div>
+                    </div>
+                </div>
+
+                <!-- Faculty Analysis -->
+                <div class="chart-card full-width">
+                    <h3>Faculty-wise Analysis</h3>
+                    <div class="chart-content">
+                        <div id="facultyChart" class="subject-grid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI-Inspired Insights & Recommendations -->
+            <div class="insights-section">
+                <div class="section-header">
+                    <div>
+                        <h2>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 28px; height: 28px; vertical-align: middle; margin-right: 10px;">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            AI-Inspired Insights & Recommendations
+                        </h2>
+                        <p style="color: rgba(255,255,255,0.6); margin-top: 0.5rem;">Automated analysis for academic decision-making</p>
+                    </div>
+                </div>
+                <div id="insightsContainer" class="insights-grid"></div>
+            </div>
+
+            <!-- Recent Feedbacks -->
+            <div class="recent-feedbacks-section">
+                <div class="section-header">
+                    <h2>Recent Feedbacks</h2>
+                    <select id="filterSentiment" class="filter-select" onchange="filterFeedbacks()">
+                        <option value="all">All Sentiments</option>
+                        <option value="positive">Positive</option>
+                        <option value="neutral">Neutral</option>
+                        <option value="negative">Negative</option>
+                    </select>
+                </div>
+                <div id="recentFeedbacksList" class="feedbacks-list"></div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state-dashboard" style="display: none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                <h3>No Feedback Data Available</h3>
+                <p>There are no student feedbacks submitted yet. Data will appear here once students start submitting feedback.</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let allFeedbacks = [];
+
+        window.onload = function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            if (!currentUser.role || currentUser.role !== 'admin') {
+                alert('Unauthorized! Admin access only.');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            loadDashboard();
+        };
+
+        function loadDashboard() {
+            // Show loading state on refresh button
+            const refreshBtn = document.querySelector('.btn-refresh');
+            const originalHTML = refreshBtn.innerHTML;
+            refreshBtn.disabled = true;
+            refreshBtn.style.opacity = '0.6';
+            refreshBtn.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite;">
+                    <polyline points="23 4 23 10 17 10"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                </svg>
+                Refreshing...
+            `;
+
+            // Simulate loading delay for better UX
+            setTimeout(() => {
+                allFeedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+
+                if (allFeedbacks.length === 0) {
+                    document.getElementById('emptyState').style.display = 'flex';
+                    document.querySelector('.overview-stats').style.display = 'none';
+                    document.querySelector('.charts-grid').style.display = 'none';
+                    document.querySelector('.insights-section').style.display = 'none';
+                    document.querySelector('.recent-feedbacks-section').style.display = 'none';
+                } else {
+                    document.getElementById('emptyState').style.display = 'none';
+                    document.querySelector('.overview-stats').style.display = 'grid';
+                    document.querySelector('.charts-grid').style.display = 'grid';
+                    document.querySelector('.insights-section').style.display = 'block';
+                    document.querySelector('.recent-feedbacks-section').style.display = 'block';
+
+                    updateOverviewStats();
+                    createSentimentChart();
+                    createRatingChart();
+                    createCategoryChart();
+                    createFacultyChart();
+                    generateInsights();
+                    displayRecentFeedbacks(allFeedbacks);
+                }
+
+                // Reset refresh button
+                refreshBtn.disabled = false;
+                refreshBtn.style.opacity = '1';
+                refreshBtn.innerHTML = originalHTML;
+
+                // Show success message
+                showToast('Dashboard refreshed successfully!');
+            }, 500);
+        }
+
+        // Toast notification function
+        function showToast(message) {
+            // Remove existing toast if any
+            const existingToast = document.querySelector('.toast-notification');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(toast);
+
+            // Trigger animation
+            setTimeout(() => toast.classList.add('show'), 10);
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function updateOverviewStats() {
+            const total = allFeedbacks.length;
+            const positive = allFeedbacks.filter(f => f.sentiment === 'positive').length;
+            const neutral = allFeedbacks.filter(f => f.sentiment === 'neutral').length;
+            const negative = allFeedbacks.filter(f => f.sentiment === 'negative').length;
+            const avgRating = allFeedbacks.reduce((sum, f) => sum + f.rating, 0) / total;
+
+            document.getElementById('totalFeedbacks').textContent = total;
+            document.getElementById('positiveFeedbacks').textContent = positive;
+            document.getElementById('neutralFeedbacks').textContent = neutral;
+            document.getElementById('negativeFeedbacks').textContent = negative;
+            document.getElementById('averageRating').textContent = avgRating.toFixed(1);
+
+            document.getElementById('positivePercentage').textContent = ((positive / total) * 100).toFixed(1) + '%';
+            document.getElementById('neutralPercentage').textContent = ((neutral / total) * 100).toFixed(1) + '%';
+            document.getElementById('negativePercentage').textContent = ((negative / total) * 100).toFixed(1) + '%';
+        }
+
+        function createSentimentChart() {
+            const positive = allFeedbacks.filter(f => f.sentiment === 'positive').length;
+            const neutral = allFeedbacks.filter(f => f.sentiment === 'neutral').length;
+            const negative = allFeedbacks.filter(f => f.sentiment === 'negative').length;
+            const total = allFeedbacks.length;
+
+            const canvas = document.getElementById('sentimentChart');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 300;
+            canvas.height = 300;
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 100;
+
+            const positiveAngle = (positive / total) * 2 * Math.PI;
+            const neutralAngle = (neutral / total) * 2 * Math.PI;
+            const negativeAngle = (negative / total) * 2 * Math.PI;
+
+            let currentAngle = -Math.PI / 2;
+
+            // Positive
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + positiveAngle);
+            ctx.closePath();
+            ctx.fillStyle = '#4caf50';
+            ctx.fill();
+            currentAngle += positiveAngle;
+
+            // Neutral
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + neutralAngle);
+            ctx.closePath();
+            ctx.fillStyle = '#ff9800';
+            ctx.fill();
+            currentAngle += neutralAngle;
+
+            // Negative
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + negativeAngle);
+            ctx.closePath();
+            ctx.fillStyle = '#f44336';
+            ctx.fill();
+
+            // Center circle
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 60, 0, 2 * Math.PI);
+            ctx.fillStyle = '#000';
+            ctx.fill();
+
+            // Text
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(total, centerX, centerY);
+        }
+
+        function createRatingChart() {
+            const ratings = [1, 2, 3, 4, 5];
+            const ratingCounts = ratings.map(r => allFeedbacks.filter(f => f.rating === r).length);
+            const maxCount = Math.max(...ratingCounts);
+
+            const html = ratings.map((rating, index) => {
+                const count = ratingCounts[index];
+                const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
+                return `
+                    <div class="rating-bar-item">
+                        <div class="rating-bar-label">${'⭐'.repeat(rating)}</div>
+                        <div class="rating-bar-container">
+                            <div class="rating-bar-fill" style="width: ${percentage}%"></div>
+                        </div>
+                        <div class="rating-bar-count">${count}</div>
+                    </div>
+                `;
+            }).reverse().join('');
+
+            document.getElementById('ratingBars').innerHTML = html;
+        }
+
+        function createCategoryChart() {
+            const categories = {};
+            allFeedbacks.forEach(f => {
+                categories[f.category] = (categories[f.category] || 0) + 1;
+            });
+
+            const sorted = Object.entries(categories).sort((a, b) => b[1] - a[1]);
+            const maxCount = sorted[0] ? sorted[0][1] : 1;
+
+            const html = sorted.map(([category, count]) => {
+                const percentage = (count / maxCount) * 100;
+                const sentimentBreakdown = {
+                    positive: allFeedbacks.filter(f => f.category === category && f.sentiment === 'positive').length,
+                    neutral: allFeedbacks.filter(f => f.category === category && f.sentiment === 'neutral').length,
+                    negative: allFeedbacks.filter(f => f.category === category && f.sentiment === 'negative').length
+                };
+                return `
+                    <div class="category-bar-item">
+                        <div class="category-bar-header">
+                            <span class="category-name">${category}</span>
+                            <span class="category-count">${count} feedbacks</span>
+                        </div>
+                        <div class="category-bar-container">
+                            <div class="category-bar-fill" style="width: ${percentage}%">
+                                <div class="sentiment-breakdown">
+                                    <span style="width: ${(sentimentBreakdown.positive/count)*100}%; background: #4caf50;"></span>
+                                    <span style="width: ${(sentimentBreakdown.neutral/count)*100}%; background: #ff9800;"></span>
+                                    <span style="width: ${(sentimentBreakdown.negative/count)*100}%; background: #f44336;"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('categoryChart').innerHTML = html;
+        }
+
+        function createFacultyChart() {
+            const faculties = {};
+            allFeedbacks.forEach(f => {
+                if (!faculties[f.facultyName]) {
+                    faculties[f.facultyName] = {
+                        count: 0,
+                        totalRating: 0,
+                        positive: 0,
+                        neutral: 0,
+                        negative: 0,
+                        subjects: new Set()
+                    };
+                }
+                faculties[f.facultyName].count++;
+                faculties[f.facultyName].totalRating += f.rating;
+                faculties[f.facultyName][f.sentiment]++;
+                faculties[f.facultyName].subjects.add(f.subjectName);
+            });
+
+            const html = Object.entries(faculties).map(([faculty, data]) => {
+                const avgRating = (data.totalRating / data.count).toFixed(1);
+                const positivePercent = ((data.positive / data.count) * 100).toFixed(0);
+                return `
+                    <div class="subject-card">
+                        <h4>${faculty}</h4>
+                        <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-bottom: 1rem;">${data.subjects.size} Subject(s)</p>
+                        <div class="subject-stats">
+                            <div class="subject-stat">
+                                <span class="subject-stat-value">${data.count}</span>
+                                <span class="subject-stat-label">Feedbacks</span>
+                            </div>
+                            <div class="subject-stat">
+                                <span class="subject-stat-value">${avgRating}</span>
+                                <span class="subject-stat-label">Avg Rating</span>
+                            </div>
+                            <div class="subject-stat">
+                                <span class="subject-stat-value" style="color: #4caf50;">${positivePercent}%</span>
+                                <span class="subject-stat-label">Positive</span>
+                            </div>
+                        </div>
+                        <div class="subject-sentiment-bar">
+                            <div style="width: ${(data.positive/data.count)*100}%; background: #4caf50;"></div>
+                            <div style="width: ${(data.neutral/data.count)*100}%; background: #ff9800;"></div>
+                            <div style="width: ${(data.negative/data.count)*100}%; background: #f44336;"></div>
+                        </div>
+                        <button class="btn-export" style="width: 100%; margin-top: 1rem; padding: 10px; font-size: 0.9rem;" onclick="exportFacultyData('${faculty.replace(/'/g, "\\'")}')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="7 10 12 15 17 10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                            Export CSV
+                        </button>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('facultyChart').innerHTML = html;
+        }
+
+        // Generate AI-Inspired Insights for Academic Decision Making
+        function generateInsights() {
+            const insights = [];
+            const total = allFeedbacks.length;
+            const positive = allFeedbacks.filter(f => f.sentiment === 'positive').length;
+            const neutral = allFeedbacks.filter(f => f.sentiment === 'neutral').length;
+            const negative = allFeedbacks.filter(f => f.sentiment === 'negative').length;
+            const avgRating = allFeedbacks.reduce((sum, f) => sum + f.rating, 0) / total;
+
+            // Overall Sentiment Insight
+            const positivePercent = (positive / total) * 100;
+            if (positivePercent >= 70) {
+                insights.push({
+                    type: 'success',
+                    title: 'Excellent Overall Performance',
+                    description: `${positivePercent.toFixed(1)}% of feedback is positive. Students are highly satisfied with the teaching quality.`,
+                    recommendation: 'Continue current teaching methodologies and share best practices with other faculty members.',
+                    priority: 'low',
+                    icon: 'trophy'
+                });
+            } else if (positivePercent < 50) {
+                insights.push({
+                    type: 'critical',
+                    title: 'Immediate Attention Required',
+                    description: `Only ${positivePercent.toFixed(1)}% positive feedback. Student satisfaction is below acceptable levels.`,
+                    recommendation: 'Conduct faculty meetings to address concerns. Implement student support programs and review teaching methods.',
+                    priority: 'high',
+                    icon: 'alert'
+                });
+            } else {
+                insights.push({
+                    type: 'warning',
+                    title: 'Room for Improvement',
+                    description: `${positivePercent.toFixed(1)}% positive feedback. Performance is moderate but can be enhanced.`,
+                    recommendation: 'Identify specific areas of concern and implement targeted improvements.',
+                    priority: 'medium',
+                    icon: 'info'
+                });
+            }
+
+            // Subject-wise Analysis
+            const subjects = {};
+            allFeedbacks.forEach(f => {
+                if (!subjects[f.subjectName]) {
+                    subjects[f.subjectName] = { total: 0, positive: 0, negative: 0, totalRating: 0 };
+                }
+                subjects[f.subjectName].total++;
+                subjects[f.subjectName][f.sentiment]++;
+                subjects[f.subjectName].totalRating += f.rating;
+            });
+
+            // Find best performing subject
+            let bestSubject = null;
+            let bestScore = 0;
+            Object.entries(subjects).forEach(([subject, data]) => {
+                const score = (data.positive / data.total) * 100;
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestSubject = subject;
+                }
+            });
+
+            if (bestSubject) {
+                insights.push({
+                    type: 'success',
+                    title: `Top Performing Subject: ${bestSubject}`,
+                    description: `${bestScore.toFixed(1)}% positive feedback with ${subjects[bestSubject].total} responses.`,
+                    recommendation: 'Document successful teaching strategies and replicate across other subjects.',
+                    priority: 'low',
+                    icon: 'star'
+                });
+            }
+
+            // Find subjects needing attention
+            Object.entries(subjects).forEach(([subject, data]) => {
+                const negativePercent = (data.negative / data.total) * 100;
+                const avgSubjectRating = data.totalRating / data.total;
+                
+                if (negativePercent > 40 || avgSubjectRating < 2.5) {
+                    insights.push({
+                        type: 'critical',
+                        title: `${subject} Needs Immediate Intervention`,
+                        description: `${negativePercent.toFixed(1)}% negative feedback with average rating of ${avgSubjectRating.toFixed(1)}/5.`,
+                        recommendation: 'Schedule one-on-one with faculty. Review curriculum, teaching pace, and student engagement strategies.',
+                        priority: 'high',
+                        icon: 'alert'
+                    });
+                }
+            });
+
+            // Category-wise Insights
+            const categories = {};
+            allFeedbacks.forEach(f => {
+                categories[f.category] = (categories[f.category] || 0) + 1;
+            });
+
+            const topCategory = Object.entries(categories).sort((a, b) => b[1] - a[1])[0];
+            if (topCategory) {
+                insights.push({
+                    type: 'info',
+                    title: `Most Common Feedback: ${topCategory[0]}`,
+                    description: `${topCategory[1]} feedbacks (${((topCategory[1]/total)*100).toFixed(1)}%) are about ${topCategory[0].toLowerCase()}.`,
+                    recommendation: `Focus on addressing ${topCategory[0].toLowerCase()} concerns in upcoming faculty development sessions.`,
+                    priority: 'medium',
+                    icon: 'chart'
+                });
+            }
+
+            // Rating Distribution Insight
+            if (avgRating >= 4) {
+                insights.push({
+                    type: 'success',
+                    title: 'High Average Rating',
+                    description: `Average rating of ${avgRating.toFixed(2)}/5 indicates strong student satisfaction.`,
+                    recommendation: 'Maintain quality standards and consider student testimonials for institutional promotion.',
+                    priority: 'low',
+                    icon: 'star'
+                });
+            } else if (avgRating < 3) {
+                insights.push({
+                    type: 'critical',
+                    title: 'Low Average Rating Alert',
+                    description: `Average rating of ${avgRating.toFixed(2)}/5 is below acceptable standards.`,
+                    recommendation: 'Immediate action required: Conduct student forums, review teaching effectiveness, and implement improvement plans.',
+                    priority: 'high',
+                    icon: 'alert'
+                });
+            }
+
+            // Engagement Insight
+            const studentsCount = new Set(allFeedbacks.map(f => f.studentEmail)).size;
+            insights.push({
+                type: 'info',
+                title: 'Student Engagement Metrics',
+                description: `${studentsCount} unique students have submitted ${total} feedbacks (${(total/studentsCount).toFixed(1)} avg per student).`,
+                recommendation: studentsCount < 10 ? 'Encourage more students to participate in feedback system for better insights.' : 'Good participation rate. Continue promoting feedback culture.',
+                priority: 'medium',
+                icon: 'users'
+            });
+
+            // Render insights
+            renderInsights(insights);
+        }
+
+        function renderInsights(insights) {
+            const icons = {
+                trophy: '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>',
+                alert: '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+                info: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>',
+                star: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+                chart: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+                users: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'
+            };
+
+            const typeColors = {
+                success: { bg: 'rgba(76, 175, 80, 0.1)', border: '#4caf50', icon: '#4caf50' },
+                warning: { bg: 'rgba(255, 152, 0, 0.1)', border: '#ff9800', icon: '#ff9800' },
+                critical: { bg: 'rgba(244, 67, 54, 0.1)', border: '#f44336', icon: '#f44336' },
+                info: { bg: 'rgba(33, 150, 243, 0.1)', border: '#2196f3', icon: '#2196f3' }
+            };
+
+            const html = insights.map(insight => {
+                const colors = typeColors[insight.type];
+                return `
+                    <div class="insight-card" style="background: ${colors.bg}; border-color: ${colors.border};">
+                        <div class="insight-header">
+                            <div class="insight-icon" style="background: ${colors.bg}; border-color: ${colors.border};">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="${colors.icon}" stroke-width="2">
+                                    ${icons[insight.icon]}
+                                </svg>
+                            </div>
+                            <div class="insight-priority priority-${insight.priority}">
+                                ${insight.priority === 'high' ? '🔴' : insight.priority === 'medium' ? '🟡' : '🟢'} 
+                                ${insight.priority.toUpperCase()}
+                            </div>
+                        </div>
+                        <h4 class="insight-title">${insight.title}</h4>
+                        <p class="insight-description">${insight.description}</p>
+                        <div class="insight-recommendation">
+                            <strong>📋 Recommendation:</strong>
+                            <p>${insight.recommendation}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('insightsContainer').innerHTML = html;
+        }
+
+        function displayRecentFeedbacks(feedbacks) {
+            const recent = feedbacks.slice(-20).reverse();
+            
+            const html = recent.map(feedback => `
+                <div class="feedback-card-admin" data-feedback-id="${feedback.id}">
+                    <div class="feedback-card-header">
+                        <div class="feedback-student-info">
+                            <div class="student-avatar">${feedback.studentName.charAt(0)}</div>
+                            <div>
+                                <div class="student-name">${feedback.studentName}</div>
+                                <div class="student-usn">${feedback.usn}</div>
+                            </div>
+                        </div>
+                        <div class="feedback-header-actions">
+                            <span class="sentiment-badge ${feedback.sentiment}">${feedback.sentiment}</span>
+                            <button class="btn-delete-feedback" onclick="deleteFeedback(${feedback.id})" title="Delete Feedback">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="3 6 5 6 21 6"/>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                    <line x1="10" y1="11" x2="10" y2="17"/>
+                                    <line x1="14" y1="11" x2="14" y2="17"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="feedback-card-body">
+                        <div class="feedback-meta-row">
+                            <span><strong>Subject:</strong> ${feedback.subjectName}</span>
+                            <span><strong>Faculty:</strong> ${feedback.facultyName}</span>
+                            <span><strong>Rating:</strong> ${'⭐'.repeat(feedback.rating)}</span>
+                        </div>
+                        <div class="feedback-category-tag">${feedback.category}</div>
+                        <p class="feedback-text-admin">${feedback.feedback}</p>
+                        <div class="feedback-timestamp">${new Date(feedback.timestamp).toLocaleString()}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('recentFeedbacksList').innerHTML = html;
+        }
+
+        function deleteFeedback(feedbackId) {
+            if (!confirm('Are you sure you want to delete this feedback? This action cannot be undone.')) {
+                return;
+            }
+
+            // Remove from allFeedbacks array
+            const index = allFeedbacks.findIndex(f => f.id === feedbackId);
+            if (index > -1) {
+                allFeedbacks.splice(index, 1);
+                
+                // Update localStorage
+                localStorage.setItem('feedbacks', JSON.stringify(allFeedbacks));
+                
+                // Reload dashboard
+                loadDashboard();
+                
+                // Show success message
+                showToast('Feedback deleted successfully!');
+            }
+        }
+
+        function filterFeedbacks() {
+            const sentiment = document.getElementById('filterSentiment').value;
+            const filtered = sentiment === 'all' ? allFeedbacks : allFeedbacks.filter(f => f.sentiment === sentiment);
+            displayRecentFeedbacks(filtered);
+        }
+
+        function exportFacultyData(facultyName) {
+            const facultyFeedbacks = allFeedbacks.filter(f => f.facultyName === facultyName);
+            
+            if (facultyFeedbacks.length === 0) {
+                alert('No data to export for this faculty!');
+                return;
+            }
+
+            // Enhanced CSV export for specific faculty
+            const csvRows = [];
+            
+            // Add title and metadata
+            csvRows.push([`Feedback Report for ${facultyName}`]);
+            csvRows.push(['Generated on:', new Date().toLocaleString()]);
+            csvRows.push(['Total Feedbacks:', facultyFeedbacks.length]);
+            csvRows.push([]); // Empty row for spacing
+
+            // Summary Statistics
+            csvRows.push(['SUMMARY STATISTICS']);
+            const positive = facultyFeedbacks.filter(f => f.sentiment === 'positive').length;
+            const neutral = facultyFeedbacks.filter(f => f.sentiment === 'neutral').length;
+            const negative = facultyFeedbacks.filter(f => f.sentiment === 'negative').length;
+            const avgRating = (facultyFeedbacks.reduce((sum, f) => sum + f.rating, 0) / facultyFeedbacks.length).toFixed(2);
+            
+            csvRows.push(['Positive Feedbacks:', positive, `${((positive/facultyFeedbacks.length)*100).toFixed(1)}%`]);
+            csvRows.push(['Neutral Feedbacks:', neutral, `${((neutral/facultyFeedbacks.length)*100).toFixed(1)}%`]);
+            csvRows.push(['Negative Feedbacks:', negative, `${((negative/facultyFeedbacks.length)*100).toFixed(1)}%`]);
+            csvRows.push(['Average Rating:', avgRating, 'out of 5']);
+            csvRows.push([]); // Empty row for spacing
+
+            // Questionnaire Analysis (if available)
+            if (facultyFeedbacks[0].questionnaire) {
+                csvRows.push(['QUESTIONNAIRE ANALYSIS']);
+                csvRows.push(['Question', 'Excellent', 'Good', 'Average', 'Poor']);
+                
+                const questions = {
+                    q1: 'Clarity of course objectives',
+                    q2: 'Teaching methodology effectiveness',
+                    q3: 'Study materials adequacy',
+                    q4: 'Faculty accessibility',
+                    q5: 'Assessment fairness',
+                    q6: 'Industry alignment'
+                };
+
+                Object.entries(questions).forEach(([qKey, qText]) => {
+                    const responses = { Excellent: 0, Good: 0, Average: 0, Poor: 0 };
+                    facultyFeedbacks.forEach(f => {
+                        if (f.questionnaire && f.questionnaire[qKey]) {
+                            responses[f.questionnaire[qKey]]++;
+                        }
+                    });
+                    csvRows.push([qText, responses.Excellent, responses.Good, responses.Average, responses.Poor]);
+                });
+                
+                csvRows.push([]); // Empty row for spacing
+            }
+
+            // Detailed Feedback Data
+            csvRows.push(['DETAILED FEEDBACK DATA']);
+            csvRows.push([
+                'No.',
+                'Student Name',
+                'Email',
+                'USN',
+                'Subject',
+                'Category',
+                'Rating',
+                'Sentiment',
+                'Sentiment Score',
+                'Feedback Text',
+                'Date',
+                'Time'
+            ]);
+
+            // Add each feedback with proper formatting
+            facultyFeedbacks.forEach((f, index) => {
+                const date = new Date(f.timestamp);
+                const dateStr = date.toLocaleDateString();
+                const timeStr = date.toLocaleTimeString();
+                
+                csvRows.push([
+                    index + 1,
+                    escapeCSV(f.studentName),
+                    escapeCSV(f.studentEmail || 'N/A'),
+                    escapeCSV(f.usn),
+                    escapeCSV(f.subjectName),
+                    escapeCSV(f.category),
+                    f.rating,
+                    f.sentiment.toUpperCase(),
+                    f.sentimentScore || 'N/A',
+                    escapeCSV(f.feedback),
+                    dateStr,
+                    timeStr
+                ]);
+            });
+
+            csvRows.push([]); // Empty row for spacing
+
+            // Subject-wise breakdown for this faculty
+            csvRows.push(['SUBJECT-WISE BREAKDOWN']);
+            csvRows.push(['Subject', 'Count', 'Positive', 'Neutral', 'Negative', 'Avg Rating']);
+            
+            const subjects = {};
+            facultyFeedbacks.forEach(f => {
+                if (!subjects[f.subjectName]) {
+                    subjects[f.subjectName] = { total: 0, positive: 0, neutral: 0, negative: 0, totalRating: 0 };
+                }
+                subjects[f.subjectName].total++;
+                subjects[f.subjectName][f.sentiment]++;
+                subjects[f.subjectName].totalRating += f.rating;
+            });
+
+            Object.entries(subjects).forEach(([subject, data]) => {
+                csvRows.push([
+                    subject,
+                    data.total,
+                    data.positive,
+                    data.neutral,
+                    data.negative,
+                    (data.totalRating / data.total).toFixed(2)
+                ]);
+            });
+
+            // Convert to CSV format
+            const csv = csvRows.map(row => row.join(',')).join('\n');
+
+            // Add BOM for proper Excel UTF-8 encoding
+            const BOM = '\uFEFF';
+            const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const safeFacultyName = facultyName.replace(/[^a-z0-9]/gi, '_');
+            a.download = `${safeFacultyName}_Feedback_Report_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+
+            showToast(`Report for ${facultyName} exported successfully!`);
+        }
+
+        function exportData() {
+            if (allFeedbacks.length === 0) {
+                alert('No data to export!');
+                return;
+            }
+
+            // Enhanced CSV export with proper formatting and additional analytics
+            const csvRows = [];
+            
+            // Add title and metadata
+            csvRows.push(['Student Feedback Analysis Report']);
+            csvRows.push(['Generated on:', new Date().toLocaleString()]);
+            csvRows.push(['Total Feedbacks:', allFeedbacks.length]);
+            csvRows.push([]); // Empty row for spacing
+
+            // Summary Statistics
+            csvRows.push(['SUMMARY STATISTICS']);
+            const positive = allFeedbacks.filter(f => f.sentiment === 'positive').length;
+            const neutral = allFeedbacks.filter(f => f.sentiment === 'neutral').length;
+            const negative = allFeedbacks.filter(f => f.sentiment === 'negative').length;
+            const avgRating = (allFeedbacks.reduce((sum, f) => sum + f.rating, 0) / allFeedbacks.length).toFixed(2);
+            
+            csvRows.push(['Positive Feedbacks:', positive, `${((positive/allFeedbacks.length)*100).toFixed(1)}%`]);
+            csvRows.push(['Neutral Feedbacks:', neutral, `${((neutral/allFeedbacks.length)*100).toFixed(1)}%`]);
+            csvRows.push(['Negative Feedbacks:', negative, `${((negative/allFeedbacks.length)*100).toFixed(1)}%`]);
+            csvRows.push(['Average Rating:', avgRating, 'out of 5']);
+            csvRows.push([]); // Empty row for spacing
+
+            // Detailed Feedback Data
+            csvRows.push(['DETAILED FEEDBACK DATA']);
+            csvRows.push([
+                'No.',
+                'Student Name',
+                'Email',
+                'USN',
+                'Subject',
+                'Faculty',
+                'Category',
+                'Rating',
+                'Sentiment',
+                'Sentiment Score',
+                'Feedback Text',
+                'Date',
+                'Time'
+            ]);
+
+            // Add each feedback with proper formatting
+            allFeedbacks.forEach((f, index) => {
+                const date = new Date(f.timestamp);
+                const dateStr = date.toLocaleDateString();
+                const timeStr = date.toLocaleTimeString();
+                
+                csvRows.push([
+                    index + 1,
+                    escapeCSV(f.studentName),
+                    escapeCSV(f.studentEmail || 'N/A'),
+                    escapeCSV(f.usn),
+                    escapeCSV(f.subjectName),
+                    escapeCSV(f.facultyName),
+                    escapeCSV(f.category),
+                    f.rating,
+                    f.sentiment.toUpperCase(),
+                    f.sentimentScore || 'N/A',
+                    escapeCSV(f.feedback),
+                    dateStr,
+                    timeStr
+                ]);
+            });
+
+            csvRows.push([]); // Empty row for spacing
+
+            // Category-wise breakdown
+            csvRows.push(['CATEGORY-WISE ANALYSIS']);
+            csvRows.push(['Category', 'Count', 'Positive', 'Neutral', 'Negative', 'Avg Rating']);
+            
+            const categories = {};
+            allFeedbacks.forEach(f => {
+                if (!categories[f.category]) {
+                    categories[f.category] = { total: 0, positive: 0, neutral: 0, negative: 0, totalRating: 0 };
+                }
+                categories[f.category].total++;
+                categories[f.category][f.sentiment]++;
+                categories[f.category].totalRating += f.rating;
+            });
+
+            Object.entries(categories).forEach(([category, data]) => {
+                csvRows.push([
+                    category,
+                    data.total,
+                    data.positive,
+                    data.neutral,
+                    data.negative,
+                    (data.totalRating / data.total).toFixed(2)
+                ]);
+            });
+
+            csvRows.push([]); // Empty row for spacing
+
+            // Subject-wise breakdown
+            csvRows.push(['SUBJECT-WISE ANALYSIS']);
+            csvRows.push(['Subject', 'Count', 'Positive', 'Neutral', 'Negative', 'Avg Rating']);
+            
+            const subjects = {};
+            allFeedbacks.forEach(f => {
+                if (!subjects[f.subjectName]) {
+                    subjects[f.subjectName] = { total: 0, positive: 0, neutral: 0, negative: 0, totalRating: 0 };
+                }
+                subjects[f.subjectName].total++;
+                subjects[f.subjectName][f.sentiment]++;
+                subjects[f.subjectName].totalRating += f.rating;
+            });
+
+            Object.entries(subjects).forEach(([subject, data]) => {
+                csvRows.push([
+                    subject,
+                    data.total,
+                    data.positive,
+                    data.neutral,
+                    data.negative,
+                    (data.totalRating / data.total).toFixed(2)
+                ]);
+            });
+
+            // Convert to CSV format
+            const csv = csvRows.map(row => row.join(',')).join('\n');
+
+            // Add BOM for proper Excel UTF-8 encoding
+            const BOM = '\uFEFF';
+            const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Feedback_Analysis_Report_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+
+            alert('Report exported successfully!');
+        }
+
+        // Helper function to properly escape CSV values
+        function escapeCSV(value) {
+            if (value === null || value === undefined) return '';
+            const stringValue = String(value);
+            // If value contains comma, quote, or newline, wrap in quotes and escape quotes
+            if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
+                return `"${stringValue.replace(/"/g, '""')}"`;
+            }
+            return stringValue;
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

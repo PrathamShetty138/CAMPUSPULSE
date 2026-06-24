@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusPulse - Presentation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #020617;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px 100px;
+        }
+
+        .slide {
+            width: 960px;
+            min-height: 540px;
+            border-radius: 16px;
+            padding: 56px 60px;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .slide.active { display: flex; }
+        .slide-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #10b981;
+            margin-bottom: 28px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(16,185,129,0.3);
+        }
+        .card {
+            background: rgba(16,185,129,0.08);
+            border: 1px solid rgba(16,185,129,0.25);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .card h3 { color: #10b981; font-size: 1rem; margin-bottom: 12px; font-weight: 700; }
+        .card ul { list-style: none; }
+        .card ul li {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.88rem;
+            padding: 4px 0 4px 16px;
+            position: relative;
+            line-height: 1.5;
+        }
+        .card ul li::before { content: '▸'; color: #10b981; position: absolute; left: 0; }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+        .step {
+            background: rgba(16,185,129,0.08);
+            border: 1px solid rgba(16,185,129,0.25);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        .step-num {
+            width: 34px; height: 34px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+        .step h4 { color: #10b981; font-size: 0.9rem; margin-bottom: 3px; }
+        .step p { color: rgba(255,255,255,0.7); font-size: 0.82rem; line-height: 1.5; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: rgba(16,185,129,0.2); color: #10b981; padding: 9px 14px; text-align: left; font-size: 0.88rem; }
+        td { padding: 9px 14px; color: rgba(255,255,255,0.8); font-size: 0.83rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(16,185,129,0.15);
+            border: 1px solid #10b981;
+            border-radius: 20px;
+            color: #10b981;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 4px;
+        }
+        /* Slide 1 */
+        .slide-1 {
+            background: linear-gradient(135deg, #0f172a 0%, #064e3b 100%);
+            text-align: center;
+            align-items: center;
+            border: 1px solid rgba(16,185,129,0.3);
+        }
+        .slide-1 .logo {
+            width: 80px; height: 80px;
+            background: #10b981;
+            border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px;
+        }
+        .slide-1 .logo svg { width: 44px; height: 44px; stroke: white; }
+        .slide-1 h1 { font-size: 3.2rem; font-weight: 900; margin-bottom: 10px; }
+        .slide-1 .subtitle { font-size: 1.1rem; color: rgba(255,255,255,0.75); margin-bottom: 28px; }
+        .slide-1 .divider { width: 60px; height: 3px; background: #10b981; border-radius: 2px; margin: 0 auto 24px; }
+        .slide-1 .team-grid { display: flex; gap: 20px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+        .slide-1 .member {
+            background: rgba(16,185,129,0.1);
+            border: 1px solid rgba(16,185,129,0.3);
+            border-radius: 10px;
+            padding: 10px 18px;
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+        .slide-1 .member span { color: #10b981; font-weight: 700; display: block; }
+        .slide-1 .college { font-size: 0.85rem; color: rgba(255,255,255,0.45); margin-top: 4px; }
+        /* Impl grid */
+        .impl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .impl-item {
+            background: rgba(16,185,129,0.07);
+            border: 1px solid rgba(16,185,129,0.2);
+            border-radius: 10px;
+            padding: 14px 16px;
+        }
+        .impl-item h4 { color: #10b981; font-size: 0.88rem; margin-bottom: 4px; }
+        .impl-item p { color: rgba(255,255,255,0.7); font-size: 0.8rem; line-height: 1.5; }
+        /* Slide 7 */
+        .slide-7 {
+            background: linear-gradient(135deg, #0f172a 0%, #064e3b 100%);
+            text-align: center;
+            align-items: center;
+            border: 1px solid rgba(16,185,129,0.3);
+        }
+        .slide-7 h1 { font-size: 3rem; font-weight: 900; margin-bottom: 12px; }
+        .slide-7 .tagline { font-size: 1rem; color: rgba(255,255,255,0.6); margin-bottom: 28px; }
+        .slide-7 .link-box {
+            background: rgba(16,185,129,0.1);
+            border: 1px solid rgba(16,185,129,0.4);
+            border-radius: 12px;
+            padding: 14px 28px;
+            margin-bottom: 24px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .slide-7 .link-box a { color: #10b981; text-decoration: none; font-weight: 700; }
+        .slide-7 .link-box a:hover { text-decoration: underline; }
+        .slide-7 .team-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+        .slide-7 .t-chip {
+            background: rgba(16,185,129,0.1);
+            border: 1px solid rgba(16,185,129,0.3);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 0.82rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+        .slide-7 .t-chip span { color: #10b981; font-weight: 700; display: block; }
+        .slide-7 .college-tag { font-size: 0.8rem; color: rgba(255,255,255,0.35); }
+    </style>
+</head>
+<body>
+
+<!-- SLIDE 1 -->
+<div class="slide slide-1 active">
+    <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+    </div>
+    <h1>CampusPulse</h1>
+    <div class="subtitle">AI-Powered Student Feedback Analytics System</div>
+    <div class="divider"></div>
+    <div class="team-grid">
+        <div class="member"><span>Poorvi Kalyani</span>NNM23CS125</div>
+        <div class="member"><span>Pratham Shetty</span>NNM23CS138</div>
+        <div class="member"><span>Punya HV Gowda</span>NNM23CS142</div>
+    </div>
+    <div class="college">NMAM Institute of Technology, Nitte &nbsp;|&nbsp; Computer Science and Engineering &nbsp;|&nbsp; 2025-26</div>
+</div>
+
+<!-- SLIDE 2 -->
+<div class="slide" style="background:#0f172a; border:1px solid rgba(16,185,129,0.3); padding:56px 60px;">
+    <div class="slide-title">Problem Statement</div>
+    <div style="font-size:1.5rem; font-weight:700; margin-bottom:28px; line-height:1.2;">Challenges in Traditional<br>Feedback Systems</div>
+    <div class="two-col">
+        <div class="card" style="display:flex; gap:16px; align-items:flex-start;">
+            <div style="font-size:22px; flex-shrink:0;">📋</div>
+            <div>
+                <h3>Manual Processing</h3>
+                <p style="color:rgba(255,255,255,0.6); font-size:0.85rem; line-height:1.5; margin-top:6px;">Feedback collected on paper or basic forms requires manual reading and interpretation, which is time-consuming and error-prone.</p>
+            </div>
+        </div>
+        <div class="card" style="display:flex; gap:16px; align-items:flex-start;">
+            <div style="font-size:22px; flex-shrink:0;">⏳</div>
+            <div>
+                <h3>Delayed Insights</h3>
+                <p style="color:rgba(255,255,255,0.6); font-size:0.85rem; line-height:1.5; margin-top:6px;">No real-time analysis means institutions react too late to student concerns, missing the opportunity for timely improvements.</p>
+            </div>
+        </div>
+        <div class="card" style="display:flex; gap:16px; align-items:flex-start;">
+            <div style="font-size:22px; flex-shrink:0;">📉</div>
+            <div>
+                <h3>No Sentiment Detection</h3>
+                <p style="color:rgba(255,255,255,0.6); font-size:0.85rem; line-height:1.5; margin-top:6px;">Traditional systems lack the ability to automatically detect whether feedback is positive, neutral, or negative.</p>
+            </div>
+        </div>
+        <div class="card" style="display:flex; gap:16px; align-items:flex-start;">
+            <div style="font-size:22px; flex-shrink:0;">🔒</div>
+            <div>
+                <h3>Lack of Role-based Access</h3>
+                <p style="color:rgba(255,255,255,0.6); font-size:0.85rem; line-height:1.5; margin-top:6px;">No clear separation between student and admin views leads to privacy concerns and unstructured data management.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 3 -->
+<div class="slide" style="background:#0f172a; border:1px solid rgba(16,185,129,0.3); padding:56px 60px;">
+    <div class="slide-title">Objectives</div>
+    <div style="font-size:1.5rem; font-weight:700; margin-bottom:28px;">What CampusPulse Aims to Achieve</div>
+    <div style="display:flex; flex-direction:column; gap:14px;">
+        <div class="step">
+            <div class="step-num">01</div>
+            <div><p style="color:rgba(255,255,255,0.8); font-size:0.9rem;">Provide an easy-to-use platform for students to submit structured feedback on teaching, facilities, and curriculum.</p></div>
+        </div>
+        <div class="step">
+            <div class="step-num">02</div>
+            <div><p style="color:rgba(255,255,255,0.8); font-size:0.9rem;">Automatically classify feedback sentiment as Positive, Neutral, or Negative using a rule-based AI engine.</p></div>
+        </div>
+        <div class="step">
+            <div class="step-num">03</div>
+            <div><p style="color:rgba(255,255,255,0.8); font-size:0.9rem;">Deliver real-time analytics and interactive charts to administrators for data-driven academic decision-making.</p></div>
+        </div>
+        <div class="step">
+            <div class="step-num">04</div>
+            <div><p style="color:rgba(255,255,255,0.8); font-size:0.9rem;">Generate AI-inspired insights and actionable recommendations to improve academic quality continuously.</p></div>
+        </div>
+        <div class="step">
+            <div class="step-num">05</div>
+            <div><p style="color:rgba(255,255,255,0.8); font-size:0.9rem;">Ensure secure, role-based access with separate Student and Admin portals to maintain data privacy.</p></div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 4 -->
+<div class="slide" style="background:#0f172a; border:1px solid rgba(16,185,129,0.3); padding:56px 60px;">
+    <div class="slide-title">Implementation — Technology Stack</div>
+    <div class="impl-grid">
+        <div class="impl-item" style="text-align:center;">
+            <div style="font-size:32px; margin-bottom:8px;">🌐</div>
+            <h4>HTML</h4>
+            <p>Semantic structure for all pages including forms, dashboards, and navigation</p>
+        </div>
+        <div class="impl-item" style="text-align:center;">
+            <div style="font-size:32px; margin-bottom:8px;">🎨</div>
+            <h4>CSS</h4>
+            <p>Custom styling with animations, gradients, responsive layouts, and dark theme UI</p>
+        </div>
+        <div class="impl-item" style="text-align:center;">
+            <div style="font-size:32px; margin-bottom:8px;">⚡</div>
+            <h4>JavaScript</h4>
+            <p>Core logic for sentiment analysis, chart rendering, and dynamic UI interactions</p>
+        </div>
+        <div class="impl-item" style="text-align:center;">
+            <div style="font-size:32px; margin-bottom:8px;">🧠</div>
+            <h4>Sentiment Engine</h4>
+            <p>Rule-based NLP logic with negation handling and keyword scoring (~95% accuracy)</p>
+        </div>
+        <div class="impl-item" style="text-align:center;">
+            <div style="font-size:32px; margin-bottom:8px;">💾</div>
+            <h4>localStorage</h4>
+            <p>Client-side data persistence — no backend or database required</p>
+        </div>
+        <div class="impl-item" style="text-align:center;">
+            <div style="font-size:32px; margin-bottom:8px;">📊</div>
+            <h4>Canvas API</h4>
+            <p>Custom pie charts and bar graphs rendered natively without external libraries</p>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 5 -->
+<div class="slide" style="background:#0f172a; border:1px solid rgba(16,185,129,0.3); padding:56px 60px;">
+    <div class="slide-title">Project Demo — Key Features</div>
+    <div class="two-col">
+        <div class="card">
+            <h3>🎓 Student Portal</h3>
+            <ul>
+                <li>Sign up / Sign in with USN</li>
+                <li>Submit feedback with category &amp; rating</li>
+                <li>View submission history</li>
+                <li>Manage personal profile</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>🛡️ Admin Dashboard</h3>
+            <ul>
+                <li>Real-time sentiment overview</li>
+                <li>Pie chart &amp; rating distribution</li>
+                <li>Category &amp; subject-wise analysis</li>
+                <li>AI-generated recommendations</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>🤖 Sentiment Analysis</h3>
+            <ul>
+                <li>Positive / Neutral / Negative classification</li>
+                <li>Negation handling (e.g. "not good")</li>
+                <li>Keyword scoring with context</li>
+                <li>~95% classification accuracy</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>📤 Reports &amp; Export</h3>
+            <ul>
+                <li>Export all feedback as CSV</li>
+                <li>Summary statistics included</li>
+                <li>Filter by sentiment type</li>
+                <li>Refresh dashboard in real-time</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 7 -->
+<div class="slide slide-7">
+    <h1>Thank You</h1>
+    <div class="tagline">CampusPulse — AI-Powered Student Feedback Analytics System</div>
+    <div class="link-box">
+        <svg style="width:20px;height:20px;flex-shrink:0;" viewBox="0 0 24 24" fill="white">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+        <a href="file:///C:/Users/nnm23/OneDrive/Desktop/IWP%20MINI%20PROJECT/index.html" target="_blank">CampusPulse</a>
+    </div>
+    <div class="team-row">
+        <div class="t-chip"><span>Poorvi Kalyani</span>NNM23CS125</div>
+        <div class="t-chip"><span>Pratham Shetty</span>NNM23CS138</div>
+        <div class="t-chip"><span>Punya HV Gowda</span>NNM23CS142</div>
+    </div>
+    <div class="college-tag">NMAM Institute of Technology, Nitte &nbsp;|&nbsp; Computer Science and Engineering &nbsp;|&nbsp; 2025-26</div>
+</div>
+
+
+
+<script>
+    let current = 0;
+    const slides = document.querySelectorAll('.slide');
+
+    function changeSlide(dir) {
+        slides[current].classList.remove('active');
+        current = (current + dir + slides.length) % slides.length;
+        slides[current].classList.add('active');
+    }
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') changeSlide(-1);
+    });
+</script>
+</body>
+</html>
