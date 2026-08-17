@@ -129,6 +129,7 @@
         </div>
     </main>
 
+<<<<<<< HEAD
     <script src="api.js"></script>
     <script>
         let allSubmissions = [];
@@ -154,6 +155,39 @@
             }
         };
 
+=======
+    <script>
+        let allSubmissions = [];
+
+        window.onload = function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            if (!currentUser.role || currentUser.role !== 'student') {
+                alert('Please login first!');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            document.getElementById('studentName').textContent = currentUser.name || 'Student';
+            loadSubmissions();
+        };
+
+        function loadSubmissions() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+            allSubmissions = feedbacks.filter(f => f.studentEmail === currentUser.email);
+
+            if (allSubmissions.length === 0) {
+                document.getElementById('emptyState').style.display = 'flex';
+                document.getElementById('submissionsList').style.display = 'none';
+                return;
+            }
+
+            updateStats();
+            displaySubmissions(allSubmissions);
+        }
+
+>>>>>>> 42a65e4c52c303b6d81a2304f63c049ff9432481
         function updateStats() {
             document.getElementById('totalSubmissions').textContent = allSubmissions.length;
             document.getElementById('positiveCount').textContent = allSubmissions.filter(f => f.sentiment === 'positive').length;
@@ -173,8 +207,13 @@
                 <div class="submission-card">
                     <div class="submission-header">
                         <div class="submission-info">
+<<<<<<< HEAD
                             <h3>${submission.subject_name}</h3>
                             <p class="submission-faculty">Faculty: ${submission.faculty_name}</p>
+=======
+                            <h3>${submission.subjectName}</h3>
+                            <p class="submission-faculty">Faculty: ${submission.facultyName}</p>
+>>>>>>> 42a65e4c52c303b6d81a2304f63c049ff9432481
                         </div>
                         <div class="submission-meta">
                             <span class="sentiment-badge ${submission.sentiment}">${submission.sentiment}</span>

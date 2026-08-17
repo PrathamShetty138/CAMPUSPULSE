@@ -168,16 +168,30 @@
         </div>
     </footer>
 
+<<<<<<< HEAD
     <script src="api.js"></script>
     <script>
         // Check if user is logged in
         window.onload = async function() {
             const currentUser = await requireAuth('student');
             if (!currentUser) return;
+=======
+    <script>
+        // Check if user is logged in
+        window.onload = function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            if (!currentUser.role || currentUser.role !== 'student') {
+                alert('Please login first!');
+                window.location.href = 'index.html';
+                return;
+            }
+>>>>>>> 42a65e4c52c303b6d81a2304f63c049ff9432481
 
             // Display student name
             document.getElementById('studentName').textContent = currentUser.name || 'Student';
 
+<<<<<<< HEAD
             // Load student's submissions count and recent activity
             try {
                 const data = await api.get('/api/feedbacks/my');
@@ -196,6 +210,35 @@
             if (recent.length === 0) return; // Keep empty state
 
             activityDiv.innerHTML = recent.map(feedback => `
+=======
+            // Load student's submissions count
+            loadSubmissionsCount();
+            loadRecentActivity();
+        };
+
+        function loadSubmissionsCount() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+            const userFeedbacks = feedbacks.filter(f => f.studentEmail === currentUser.email);
+            document.getElementById('totalSubmissions').textContent = userFeedbacks.length;
+        }
+
+        function loadRecentActivity() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+            const userFeedbacks = feedbacks
+                .filter(f => f.studentEmail === currentUser.email)
+                .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                .slice(0, 5);
+
+            const activityDiv = document.getElementById('recentActivity');
+
+            if (userFeedbacks.length === 0) {
+                return; // Keep empty state
+            }
+
+            activityDiv.innerHTML = userFeedbacks.map(feedback => `
+>>>>>>> 42a65e4c52c303b6d81a2304f63c049ff9432481
                 <div class="activity-item">
                     <div class="activity-icon ${feedback.sentiment}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -213,6 +256,16 @@
                 </div>
             `).join('');
         }
+<<<<<<< HEAD
+=======
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
+            }
+        }
+>>>>>>> 42a65e4c52c303b6d81a2304f63c049ff9432481
     </script>
 </body>
 </html>

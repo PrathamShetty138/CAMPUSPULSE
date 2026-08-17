@@ -103,6 +103,7 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     <script src="api.js"></script>
     <script>
         document.getElementById('studentSignUpForm').addEventListener('submit', async function(e) {
@@ -114,12 +115,23 @@
             const password        = document.getElementById('signupPassword').value;
             const confirmPassword = document.getElementById('signupConfirmPassword').value;
             const submitBtn       = this.querySelector('button[type="submit"]');
+=======
+    <script>
+        document.getElementById('studentSignUpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const usn = document.getElementById('signupUSN').value.toUpperCase();
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+>>>>>>> 42a65e4c52c303b6d81a2304f63c049ff9432481
 
             if (password !== confirmPassword) {
                 alert('Passwords do not match!');
                 return;
             }
 
+<<<<<<< HEAD
             submitBtn.disabled = true;
             submitBtn.querySelector('span').textContent = 'Signing up...';
 
@@ -132,6 +144,35 @@
                 submitBtn.disabled = false;
                 submitBtn.querySelector('span').textContent = 'Sign Up';
             }
+=======
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long!');
+                return;
+            }
+
+            // Save to localStorage
+            const students = JSON.parse(localStorage.getItem('students') || '[]');
+            
+            // Check if email already exists
+            if (students.find(s => s.email === email)) {
+                alert('Email already registered! Please sign in instead.');
+                window.location.href = 'student-signin.html';
+                return;
+            }
+
+            // Check if USN already exists
+            if (students.find(s => s.usn === usn)) {
+                alert('USN already registered! Please sign in instead.');
+                window.location.href = 'student-signin.html';
+                return;
+            }
+
+            students.push({ name, usn, email, password });
+            localStorage.setItem('students', JSON.stringify(students));
+            
+            alert('Sign Up Successful! Please sign in now.');
+            window.location.href = 'student-signin.html';
+>>>>>>> 42a65e4c52c303b6d81a2304f63c049ff9432481
         });
     </script>
 </body>

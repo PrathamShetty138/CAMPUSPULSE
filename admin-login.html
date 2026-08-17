@@ -66,6 +66,7 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     <script src="api.js"></script>
     <script>
         document.getElementById('adminLoginForm').addEventListener('submit', async function(e) {
@@ -86,6 +87,24 @@
                 alert(err.message);
                 submitBtn.disabled = false;
                 submitBtn.querySelector('span').textContent = 'Login';
+=======
+    <script>
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+
+            // Admin credentials (hardcoded for security)
+            if (username === 'admin' && password === 'admin123') {
+                localStorage.setItem('currentUser', JSON.stringify({ 
+                    name: 'Administrator', 
+                    role: 'admin' 
+                }));
+                alert('Login Successful! Welcome Administrator');
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('Invalid admin credentials!');
+>>>>>>> 42a65e4c52c303b6d81a2304f63c049ff9432481
             }
         });
     </script>

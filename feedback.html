@@ -371,6 +371,7 @@
         </div>
     </main>
 
+<<<<<<< HEAD
     <script src="api.js"></script>
     <script>
         let currentUser = null;
@@ -379,6 +380,18 @@
         window.onload = async function() {
             currentUser = await requireAuth('student');
             if (!currentUser) return;
+=======
+    <script>
+        // Check if user is logged in
+        window.onload = function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            if (!currentUser.role || currentUser.role !== 'student') {
+                alert('Please login first!');
+                window.location.href = 'index.html';
+                return;
+            }
+>>>>>>> 42a65e4c52c303b6d81a2304f63c049ff9432481
 
             // Pre-fill student name and USN
             document.getElementById('studentName').textContent = currentUser.name || 'Student';
@@ -473,7 +486,11 @@
         }
 
         // Form Submission
+<<<<<<< HEAD
         document.getElementById('feedbackForm').addEventListener('submit', async function(e) {
+=======
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+>>>>>>> 42a65e4c52c303b6d81a2304f63c049ff9432481
             e.preventDefault();
 
             // Validate rating
@@ -482,6 +499,7 @@
                 return;
             }
 
+<<<<<<< HEAD
             const submitBtn = this.querySelector('.btn-submit');
             submitBtn.disabled = true;
 
@@ -495,6 +513,19 @@
                 rating:         parseInt(ratingInput.value),
                 category:       autoTagCategory(),
                 feedback:       feedbackText.value,
+=======
+            // Get form data
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const feedbackData = {
+                studentName: document.getElementById('studentNameField').value,
+                studentEmail: currentUser.email,
+                usn: document.getElementById('usn').value.toUpperCase(),
+                subjectName: document.getElementById('subjectName').value,
+                facultyName: document.getElementById('facultyName').value,
+                rating: parseInt(ratingInput.value),
+                category: autoTagCategory(),
+                feedback: feedbackText.value,
+>>>>>>> 42a65e4c52c303b6d81a2304f63c049ff9432481
                 questionnaire: {
                     q1: document.querySelector('input[name="q1"]:checked').value,
                     q2: document.querySelector('input[name="q2"]:checked').value,
@@ -503,6 +534,7 @@
                     q5: document.querySelector('input[name="q5"]:checked').value,
                     q6: document.querySelector('input[name="q6"]:checked').value
                 },
+<<<<<<< HEAD
                 sentiment:      sentiment.type,
                 sentimentScore: sentiment.score
             };
@@ -514,6 +546,24 @@
                 alert('Failed to submit feedback: ' + err.message);
                 submitBtn.disabled = false;
             }
+=======
+                timestamp: new Date().toISOString(),
+                id: Date.now()
+            };
+
+            // Simple sentiment analysis (we'll enhance this later)
+            const sentiment = analyzeSentiment(feedbackData.feedback, feedbackData.rating);
+            feedbackData.sentiment = sentiment.type;
+            feedbackData.sentimentScore = sentiment.score;
+
+            // Save to localStorage
+            const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+            feedbacks.push(feedbackData);
+            localStorage.setItem('feedbacks', JSON.stringify(feedbacks));
+
+            // Show success message
+            showSuccessMessage(sentiment);
+>>>>>>> 42a65e4c52c303b6d81a2304f63c049ff9432481
         });
 
         // Enhanced Rule-Based Sentiment Analysis

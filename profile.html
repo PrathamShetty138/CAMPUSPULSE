@@ -153,6 +153,7 @@
         </div>
     </main>
 
+<<<<<<< HEAD
     <script src="api.js"></script>
     <script>
         let currentUser = {};
@@ -192,14 +193,88 @@
             const confirmPassword = document.getElementById('confirmPassword').value;
 
             if (newPassword) {
+=======
+    <script>
+        let currentUser = {};
+
+        window.onload = function() {
+            currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            if (!currentUser.role || currentUser.role !== 'student') {
+                alert('Please login first!');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            loadProfile();
+        };
+
+        function loadProfile() {
+            // Display current user info
+            document.getElementById('studentName').textContent = currentUser.name || 'Student';
+            document.getElementById('profileName').textContent = currentUser.name || 'Student';
+            document.getElementById('profileEmail').textContent = currentUser.email || '';
+            document.getElementById('avatarInitial').textContent = (currentUser.name || 'S').charAt(0).toUpperCase();
+
+            // Pre-fill form
+            document.getElementById('editName').value = currentUser.name || '';
+            document.getElementById('editEmail').value = currentUser.email || '';
+
+            // Load stats
+            const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+            const userFeedbacks = feedbacks.filter(f => f.studentEmail === currentUser.email);
+            
+            document.getElementById('profileSubmissions').textContent = userFeedbacks.length;
+            
+            if (userFeedbacks.length > 0) {
+                const avgRating = userFeedbacks.reduce((sum, f) => sum + f.rating, 0) / userFeedbacks.length;
+                document.getElementById('profileAvgRating').textContent = avgRating.toFixed(1);
+            }
+        }
+
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const newName = document.getElementById('editName').value;
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Get students array
+            const students = JSON.parse(localStorage.getItem('students') || '[]');
+            const studentIndex = students.findIndex(s => s.email === currentUser.email);
+
+            if (studentIndex === -1) {
+                alert('User not found!');
+                return;
+            }
+
+            // If changing password
+            if (newPassword) {
+                if (!currentPassword) {
+                    alert('Please enter your current password!');
+                    return;
+                }
+
+                if (students[studentIndex].password !== currentPassword) {
+                    alert('Current password is incorrect!');
+                    return;
+                }
+
+>>>>>>> 42a65e4c52c303b6d81a2304f63c049ff9432481
                 if (newPassword !== confirmPassword) {
                     alert('New passwords do not match!');
                     return;
                 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 42a65e4c52c303b6d81a2304f63c049ff9432481
                 if (newPassword.length < 6) {
                     alert('Password must be at least 6 characters!');
                     return;
                 }
+<<<<<<< HEAD
             }
 
             const submitBtn = this.querySelector('.btn-submit');
@@ -230,6 +305,58 @@
                 window.location.href = 'index.html';
             } catch (err) {
                 alert('Failed to delete account: ' + err.message);
+=======
+
+                students[studentIndex].password = newPassword;
+            }
+
+            // Update name
+            students[studentIndex].name = newName;
+            localStorage.setItem('students', JSON.stringify(students));
+
+            // Update current user
+            currentUser.name = newName;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+            alert('Profile updated successfully!');
+            loadProfile();
+            
+            // Clear password fields
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+        });
+
+        function deleteAccount() {
+            if (!confirm('Are you sure you want to delete your account? This action cannot be undone!')) {
+                return;
+            }
+
+            if (!confirm('All your feedback submissions will be deleted. Are you absolutely sure?')) {
+                return;
+            }
+
+            // Remove from students
+            const students = JSON.parse(localStorage.getItem('students') || '[]');
+            const filtered = students.filter(s => s.email !== currentUser.email);
+            localStorage.setItem('students', JSON.stringify(filtered));
+
+            // Remove feedbacks
+            const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+            const filteredFeedbacks = feedbacks.filter(f => f.studentEmail !== currentUser.email);
+            localStorage.setItem('feedbacks', JSON.stringify(filteredFeedbacks));
+
+            // Logout
+            localStorage.removeItem('currentUser');
+            alert('Account deleted successfully!');
+            window.location.href = 'index.html';
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
+>>>>>>> 42a65e4c52c303b6d81a2304f63c049ff9432481
             }
         }
     </script>
