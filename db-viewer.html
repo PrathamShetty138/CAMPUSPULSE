@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DB Viewer — CampusPulse Admin</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0f0f1a;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        /* ── Top bar ── */
+        .topbar {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-bottom: 1px solid rgba(157, 78, 221, 0.3);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .topbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .topbar-brand svg {
+            width: 28px; height: 28px;
+            stroke: #9d4edd;
+        }
+        .topbar-brand h1 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #9d4edd, #c77dff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .topbar-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn svg { width: 16px; height: 16px; }
+        .btn-primary  { background: linear-gradient(135deg, #9d4edd, #7b2fbe); color: #fff; }
+        .btn-primary:hover  { opacity: 0.85; }
+        .btn-ghost   { background: rgba(255,255,255,0.08); color: #e2e8f0; }
+        .btn-ghost:hover { background: rgba(255,255,255,0.14); }
+        .btn-danger  { background: rgba(244,67,54,0.15); color: #f44336; border: 1px solid rgba(244,67,54,0.3); }
+        .btn-danger:hover { background: rgba(244,67,54,0.25); }
+
+        /* ── Layout ── */
+        .page { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+
+        /* ── Stat cards ── */
+        .stat-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 1px solid rgba(157,78,221,0.2);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #9d4edd, #c77dff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-card.green .value  { background: linear-gradient(135deg, #4caf50, #81c784); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-card.orange .value { background: linear-gradient(135deg, #ff9800, #ffb74d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-card.red .value    { background: linear-gradient(135deg, #f44336, #e57373); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-card.gold .value   { background: linear-gradient(135deg, #ffd700, #ffed4e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* ── Section ── */
+        .section {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 1px solid rgba(157,78,221,0.2);
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        .section-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(157,78,221,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #c77dff;
+        }
+        .section-title svg { width: 18px; height: 18px; stroke: #9d4edd; }
+        .row-count {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.45);
+            background: rgba(157,78,221,0.1);
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            border: 1px solid rgba(157,78,221,0.2);
+        }
+
+        /* ── Search ── */
+        .search-input {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(157,78,221,0.25);
+            border-radius: 8px;
+            padding: 0.4rem 0.8rem;
+            color: #e2e8f0;
+            font-size: 0.85rem;
+            width: 220px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-input:focus { border-color: #9d4edd; }
+        .search-input::placeholder { color: rgba(255,255,255,0.3); }
+
+        /* ── Table ── */
+        .table-wrap { overflow-x: auto; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.83rem;
+        }
+        thead th {
+            padding: 0.7rem 1rem;
+            text-align: left;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: rgba(255,255,255,0.45);
+            background: rgba(157,78,221,0.07);
+            border-bottom: 1px solid rgba(157,78,221,0.15);
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+        }
+        thead th:hover { color: #c77dff; }
+        thead th .sort-icon { margin-left: 4px; opacity: 0.4; }
+        thead th.sorted .sort-icon { opacity: 1; color: #9d4edd; }
+        tbody tr {
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            transition: background 0.15s;
+        }
+        tbody tr:hover { background: rgba(157,78,221,0.07); }
+        tbody tr:last-child { border-bottom: none; }
+        td {
+            padding: 0.65rem 1rem;
+            color: #cbd5e1;
+            vertical-align: top;
+        }
+        td.mono { font-family: 'Consolas', monospace; font-size: 0.78rem; color: #94a3b8; }
+        td.wrap { max-width: 280px; white-space: pre-wrap; word-break: break-word; }
+
+        /* ── Badges ── */
+        .badge {
+            display: inline-block;
+            padding: 0.15rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .badge.positive { background: rgba(76,175,80,0.15);  color: #4caf50; border: 1px solid rgba(76,175,80,0.3); }
+        .badge.neutral  { background: rgba(255,152,0,0.15);  color: #ff9800; border: 1px solid rgba(255,152,0,0.3); }
+        .badge.negative { background: rgba(244,67,54,0.15);  color: #f44336; border: 1px solid rgba(244,67,54,0.3); }
+        .badge.info     { background: rgba(157,78,221,0.15); color: #c77dff; border: 1px solid rgba(157,78,221,0.3); }
+
+        .stars { color: #ffd700; letter-spacing: -2px; }
+
+        /* ── Q-grid inside expanded row ── */
+        .q-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.3rem 1rem;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.55);
+        }
+        .q-grid span { color: #e2e8f0; }
+
+        /* ── Empty / loading ── */
+        .empty {
+            padding: 3rem;
+            text-align: center;
+            color: rgba(255,255,255,0.3);
+            font-size: 0.9rem;
+        }
+        .loading { animation: pulse 1.2s ease-in-out infinite; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+        /* ── Toast ── */
+        .toast {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background: #1e293b;
+            border: 1px solid rgba(157,78,221,0.4);
+            color: #e2e8f0;
+            padding: 0.75rem 1.25rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast svg { width: 16px; height: 16px; stroke: #4caf50; }
+
+        /* ── Raw JSON panel ── */
+        .json-panel {
+            display: none;
+            background: #0a0a14;
+            border-top: 1px solid rgba(157,78,221,0.15);
+            padding: 1rem 1.5rem;
+            font-family: 'Consolas', monospace;
+            font-size: 0.78rem;
+            color: #94a3b8;
+            max-height: 300px;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .json-panel.open { display: block; }
+
+        @media (max-width: 700px) {
+            .page { padding: 1rem; }
+            .topbar { padding: 0.8rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<nav class="topbar">
+    <div class="topbar-brand">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+        </svg>
+        <h1>DB Viewer — CampusPulse</h1>
+    </div>
+    <div class="topbar-actions">
+        <span id="lastRefreshed" style="font-size:0.78rem;color:rgba(255,255,255,0.35);"></span>
+        <button class="btn btn-ghost" onclick="loadStats()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"/>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+            </svg>
+            Refresh
+        </button>
+        <button class="btn btn-ghost" id="jsonToggleBtn" onclick="toggleJSON()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+            </svg>
+            Raw JSON
+        </button>
+        <a href="dashboard.html" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            Dashboard
+        </a>
+    </div>
+</nav>
+
+<div class="page">
+
+    <!-- Stats Row -->
+    <div class="stat-row" id="statRow">
+        <div class="stat-card loading"><div class="label">Students</div><div class="value" id="statStudents">—</div></div>
+        <div class="stat-card green loading"><div class="label">Feedbacks</div><div class="value" id="statFeedbacks">—</div></div>
+        <div class="stat-card gold loading"><div class="label">Avg Rating</div><div class="value" id="statAvgRating">—</div></div>
+        <div class="stat-card green loading"><div class="label">Positive</div><div class="value" id="statPositive">—</div></div>
+        <div class="stat-card orange loading"><div class="label">Neutral</div><div class="value" id="statNeutral">—</div></div>
+        <div class="stat-card red loading"><div class="label">Negative</div><div class="value" id="statNegative">—</div></div>
+    </div>
+
+    <!-- Students Table -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                Students
+                <span class="row-count" id="studentRowCount">0 rows</span>
+            </div>
+            <input class="search-input" type="text" placeholder="Search students…" oninput="filterStudents(this.value)">
+        </div>
+        <div class="table-wrap">
+            <table id="studentsTable">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable('studentsTable',0)">ID <span class="sort-icon">↕</span></th>
+                        <th onclick="sortTable('studentsTable',1)">Name <span class="sort-icon">↕</span></th>
+                        <th onclick="sortTable('studentsTable',2)">USN <span class="sort-icon">↕</span></th>
+                        <th onclick="sortTable('studentsTable',3)">Email <span class="sort-icon">↕</span></th>
+                        <th onclick="sortTable('studentsTable',4)">Registered <span class="sort-icon">↕</span></th>
+                    </tr>
+                </thead>
+                <tbody id="studentsTbody">
+                    <tr><td colspan="5" class="empty loading">Loading…</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Feedbacks Table -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                Feedbacks
+                <span class="row-count" id="feedbackRowCount">0 rows</span>
+            </div>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                <select id="sentimentFilter" class="search-input" style="width:150px;" onchange="filterFeedbacks()">
+                    <option value="">All sentiments</option>
+                    <option value="positive">Positive</option>
+                    <option value="neutral">Neutral</option>
+                    <option value="negative">Negative</option>
+                </select>
+                <input class="search-input" type="text" placeholder="Search feedbacks…" oninput="filterFeedbacks(this.value)">
+            </div>
+        </div>
+        <div class="table-wrap">
+            <table id="feedbacksTable">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable('feedbacksTable',0)">ID <span class="sort-icon">↕</span></th>
+                        <th onclick="sortTable('feedbacksTable',1)">Student <span class="sort-icon">↕</span></th>
+                        <th onclick="sortTable('feedbacksTable',2)">USN <span class="sort-icon">↕</span></th>
+                        <th onclick="sortTable('feedbacksTable',3)">Subject <span class="sort-icon">↕</span></th>
+                        <th onclick="sortTable('feedbacksTable',4)">Faculty <span class="sort-icon">↕</span></th>
+                        <th onclick="sortTable('feedbacksTable',5)">Rating <span class="sort-icon">↕</span></th>
+                        <th onclick="sortTable('feedbacksTable',6)">Sentiment <span class="sort-icon">↕</span></th>
+                        <th onclick="sortTable('feedbacksTable',7)">Score <span class="sort-icon">↕</span></th>
+                        <th onclick="sortTable('feedbacksTable',8)">Category <span class="sort-icon">↕</span></th>
+                        <th>Feedback Text</th>
+                        <th>Questionnaire</th>
+                        <th onclick="sortTable('feedbacksTable',11)">Timestamp <span class="sort-icon">↕</span></th>
+                    </tr>
+                </thead>
+                <tbody id="feedbacksTbody">
+                    <tr><td colspan="12" class="empty loading">Loading…</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Raw JSON panel -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+                </svg>
+                Raw API Response
+            </div>
+            <button class="btn btn-ghost" style="font-size:0.78rem;" onclick="copyJSON()">Copy JSON</button>
+        </div>
+        <div class="json-panel open" id="jsonPanel">Loading…</div>
+    </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toastMsg"></span>
+</div>
+
+<script src="api.js"></script>
+<script>
+    let rawData = null;
+    let allStudents  = [];
+    let allFeedbacks = [];
+    let sortState = {}; // { tableId: { col, asc } }
+
+    window.onload = async function () {
+        const user = await requireAuth('admin');
+        if (!user) return;
+        await loadStats();
+    };
+
+    async function loadStats() {
+        try {
+            rawData = await api.get('/api/admin/db-stats');
+
+            // Stats
+            document.getElementById('statStudents').textContent  = rawData.counts.students;
+            document.getElementById('statFeedbacks').textContent = rawData.counts.feedbacks;
+            document.getElementById('statAvgRating').textContent = rawData.avgRating ?? '—';
+            document.getElementById('statPositive').textContent  = rawData.sentimentCounts.positive  || 0;
+            document.getElementById('statNeutral').textContent   = rawData.sentimentCounts.neutral   || 0;
+            document.getElementById('statNegative').textContent  = rawData.sentimentCounts.negative  || 0;
+
+            // Remove loading shimmer
+            document.querySelectorAll('.stat-card').forEach(c => c.classList.remove('loading'));
+
+            allStudents  = rawData.students  || [];
+            allFeedbacks = rawData.feedbacks || [];
+
+            renderStudents(allStudents);
+            renderFeedbacks(allFeedbacks);
+
+            document.getElementById('jsonPanel').textContent = JSON.stringify(rawData, null, 2);
+            document.getElementById('lastRefreshed').textContent =
+                'Refreshed ' + new Date().toLocaleTimeString();
+
+            showToast('Database loaded successfully');
+        } catch (err) {
+            showToast('Error: ' + err.message, true);
+        }
+    }
+
+    // ── Render students ───────────────────────────────────────────────────────
+    function renderStudents(rows) {
+        document.getElementById('studentRowCount').textContent = rows.length + ' row' + (rows.length !== 1 ? 's' : '');
+        const tbody = document.getElementById('studentsTbody');
+        if (!rows.length) {
+            tbody.innerHTML = '<tr><td colspan="5" class="empty">No students found</td></tr>';
+            return;
+        }
+        tbody.innerHTML = rows.map(s => `
+            <tr>
+                <td class="mono">${s.id}</td>
+                <td><strong>${esc(s.name)}</strong></td>
+                <td class="mono"><span class="badge info">${esc(s.usn)}</span></td>
+                <td class="mono">${esc(s.email)}</td>
+                <td class="mono">${fmtDate(s.created_at)}</td>
+            </tr>
+        `).join('');
+    }
+
+    // ── Render feedbacks ──────────────────────────────────────────────────────
+    function renderFeedbacks(rows) {
+        document.getElementById('feedbackRowCount').textContent = rows.length + ' row' + (rows.length !== 1 ? 's' : '');
+        const tbody = document.getElementById('feedbacksTbody');
+        if (!rows.length) {
+            tbody.innerHTML = '<tr><td colspan="12" class="empty">No feedbacks found</td></tr>';
+            return;
+        }
+        tbody.innerHTML = rows.map(f => `
+            <tr>
+                <td class="mono">${f.id}</td>
+                <td><strong>${esc(f.student_name)}</strong><br>
+                    <span style="font-size:0.75rem;color:rgba(255,255,255,0.4);">${esc(f.student_email)}</span></td>
+                <td class="mono">${esc(f.usn)}</td>
+                <td>${esc(f.subject_name)}</td>
+                <td>${esc(f.faculty_name)}</td>
+                <td><span class="stars">${'★'.repeat(f.rating)}${'☆'.repeat(5 - f.rating)}</span></td>
+                <td><span class="badge ${f.sentiment}">${f.sentiment}</span></td>
+                <td class="mono">${f.sentiment_score}%</td>
+                <td><span class="badge info">${esc(f.category)}</span></td>
+                <td class="wrap" style="max-width:260px;">${esc(f.feedback)}</td>
+                <td>
+                    <div class="q-grid">
+                        <div>Q1: <span>${f.q1 || '—'}</span></div>
+                        <div>Q2: <span>${f.q2 || '—'}</span></div>
+                        <div>Q3: <span>${f.q3 || '—'}</span></div>
+                        <div>Q4: <span>${f.q4 || '—'}</span></div>
+                        <div>Q5: <span>${f.q5 || '—'}</span></div>
+                        <div>Q6: <span>${f.q6 || '—'}</span></div>
+                    </div>
+                </td>
+                <td class="mono">${fmtDate(f.timestamp)}</td>
+            </tr>
+        `).join('');
+    }
+
+    // ── Filters ───────────────────────────────────────────────────────────────
+    function filterStudents(query) {
+        const q = query.toLowerCase();
+        renderStudents(allStudents.filter(s =>
+            s.name.toLowerCase().includes(q) ||
+            s.usn.toLowerCase().includes(q)  ||
+            s.email.toLowerCase().includes(q)
+        ));
+    }
+
+    function filterFeedbacks(query) {
+        const q = (typeof query === 'string' ? query : '').toLowerCase();
+        const sentiment = document.getElementById('sentimentFilter').value;
+        renderFeedbacks(allFeedbacks.filter(f => {
+            const matchSentiment = !sentiment || f.sentiment === sentiment;
+            const matchText = !q ||
+                f.student_name.toLowerCase().includes(q) ||
+                f.subject_name.toLowerCase().includes(q) ||
+                f.faculty_name.toLowerCase().includes(q) ||
+                f.feedback.toLowerCase().includes(q) ||
+                f.usn.toLowerCase().includes(q);
+            return matchSentiment && matchText;
+        }));
+    }
+
+    // ── Sort ──────────────────────────────────────────────────────────────────
+    function sortTable(tableId, colIndex) {
+        const table = document.getElementById(tableId);
+        const tbody = table.querySelector('tbody');
+        const rows  = Array.from(tbody.querySelectorAll('tr'));
+
+        if (!rows.length || rows[0].cells.length === 1) return; // empty state row
+
+        const prev = sortState[tableId] || { col: -1, asc: true };
+        const asc  = prev.col === colIndex ? !prev.asc : true;
+        sortState[tableId] = { col: colIndex, asc };
+
+        // Update header indicators
+        table.querySelectorAll('thead th').forEach((th, i) => {
+            th.classList.toggle('sorted', i === colIndex);
+            const icon = th.querySelector('.sort-icon');
+            if (icon) icon.textContent = i === colIndex ? (asc ? '↑' : '↓') : '↕';
+        });
+
+        rows.sort((a, b) => {
+            const av = a.cells[colIndex]?.textContent.trim() ?? '';
+            const bv = b.cells[colIndex]?.textContent.trim() ?? '';
+            const n  = parseFloat(av) - parseFloat(bv);
+            const cmp = isNaN(n) ? av.localeCompare(bv) : n;
+            return asc ? cmp : -cmp;
+        });
+
+        rows.forEach(r => tbody.appendChild(r));
+    }
+
+    // ── Utilities ─────────────────────────────────────────────────────────────
+    function esc(str) {
+        if (str == null) return '<span style="opacity:.35">null</span>';
+        return String(str)
+            .replace(/&/g,'&amp;')
+            .replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;');
+    }
+
+    function fmtDate(ts) {
+        if (!ts) return '—';
+        const d = new Date(ts.includes('T') ? ts : ts + 'Z');
+        return isNaN(d) ? ts : d.toLocaleString();
+    }
+
+    function toggleJSON() {
+        const panel = document.getElementById('jsonPanel');
+        panel.classList.toggle('open');
+    }
+
+    function copyJSON() {
+        if (!rawData) return;
+        navigator.clipboard.writeText(JSON.stringify(rawData, null, 2))
+            .then(() => showToast('JSON copied to clipboard'));
+    }
+
+    let toastTimer;
+    function showToast(msg, isError = false) {
+        const el   = document.getElementById('toast');
+        const msgEl = document.getElementById('toastMsg');
+        msgEl.textContent = msg;
+        el.querySelector('svg').style.stroke = isError ? '#f44336' : '#4caf50';
+        clearTimeout(toastTimer);
+        el.classList.add('show');
+        toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+    }
+</script>
+</body>
+</html>

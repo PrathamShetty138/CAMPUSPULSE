@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Feedback - Student Feedback System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                <span><h2>CampusPulse</h2></span>
+            </div>
+            <div class="nav-right">
+                <span class="welcome-text">Welcome, <strong id="studentName">Student</strong></span>
+                <button class="logout-btn" onclick="window.location.href='home.html'">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    </svg>
+                    Home
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="feedback-main">
+        <div class="feedback-container">
+            <div class="feedback-header">
+                <h1>Submit Your Feedback</h1>
+                <p>Your feedback helps us improve the quality of education</p>
+            </div>
+
+            <form id="feedbackForm" class="feedback-form-main">
+                <!-- Student Information -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        Student Information
+                    </h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="studentNameField">
+                                Student Name <span class="required">*</span>
+                            </label>
+                            <input type="text" id="studentNameField" placeholder="Enter your full name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="usn">
+                                USN (University Seat Number) <span class="required">*</span>
+                            </label>
+                            <input type="text" id="usn" placeholder="e.g.,NNM23CS001" required pattern="[A-Za-z0-9]+" title="Enter valid USN">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Information -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                        Course Details
+                    </h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="subjectName">
+                                Subject Name <span class="required">*</span>
+                            </label>
+                            <select id="subjectName" required>
+                                <option value="">Select Subject</option>
+                                <option value="ML: Machine Learning">ML: Machine Learning</option>
+                                <option value="CD: Compiler Design">CD: Compiler Design</option>
+                                <option value="ME: Management & Entrepreneurship">ME: Management & Entrepreneurship</option>
+                                <option value="CC: Cloud Computing">CC: Cloud Computing</option>
+                                <option value="IWP: Internet and Web Programming">IWP: Internet and Web Programming</option>
+                                <option value="IoT: IoT Device Security">IoT: IoT Device Security</option>
+                                <option value="OOMD: Object Oriented Modelling and Design">OOMD: Object Oriented Modelling and Design</option>
+                                <option value="BDA: Big Data Analytics">BDA: Big Data Analytics</option>
+                                <option value="LS: Life Skills for Engineers">LS: Life Skills for Engineers</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="facultyName">
+                                Faculty Name <span class="required">*</span>
+                            </label>
+                            <select id="facultyName" required>
+                                <option value="">Select Faculty</option>
+                                <option value="Dr. Ashwin Shenoy M">Dr. Ashwin Shenoy M</option>
+                                <option value="Dr. Raju K">Dr. Raju K</option>
+                                <option value="Mr. Sunil Kumar Shetty">Mr. Sunil Kumar Shetty</option>
+                                <option value="Dr. Shashank Shetty">Dr. Shashank Shetty</option>
+                                <option value="Mr. Suhail Ahamed Nisar Shaha">Mr. Suhail Ahamed Nisar Shaha</option>
+                                <option value="Dr. Asmitha Poojary">Dr. Asmitha Poojary</option>
+                                <option value="Ms. Aishwarya D Shetty">Ms. Aishwarya D Shetty</option>
+                                <option value="Ms. Anupama H C">Ms. Anupama H C</option>
+                                <option value="Dr. Anusha R Sharath">Dr. Anusha R Sharath</option>
+                                <option value="Dr. Dhasny Lydia M">Dr. Dhasny Lydia M</option>
+                                <option value="Dr. Anisha P R">Dr. Anisha P R</option>
+                                <option value="Dr. Sandeep Kumar Hegde">Dr. Sandeep Kumar Hegde</option>
+                                <option value="Dr. Minu P A">Dr. Minu P A</option>
+                                <option value="Mr. Sampath Kini">Mr. Sampath Kini</option>
+                                <option value="Ms. B Vijetha">Ms. B Vijetha</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rating Section -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                        </svg>
+                        Overall Rating
+                    </h3>
+                    
+                    <div class="rating-section">
+                        <div class="rating-stars" id="ratingStars">
+                            <span class="star" data-rating="1">★</span>
+                            <span class="star" data-rating="2">★</span>
+                            <span class="star" data-rating="3">★</span>
+                            <span class="star" data-rating="4">★</span>
+                            <span class="star" data-rating="5">★</span>
+                        </div>
+                        <div class="rating-label" id="ratingLabel">Click to rate</div>
+                        <input type="hidden" id="rating" name="rating" required>
+                    </div>
+                </div>
+
+                <!-- Questionnaire Section -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 11l3 3L22 4"/>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                        </svg>
+                        Course Evaluation Questionnaire
+                    </h3>
+                    
+                    <div class="questionnaire-grid">
+                        <div class="question-item">
+                            <label class="question-label">
+                                1. How would you rate the clarity of the course objectives?
+                                <span class="required">*</span>
+                            </label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="q1" value="Excellent" required>
+                                    <span>Excellent</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q1" value="Good">
+                                    <span>Good</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q1" value="Average">
+                                    <span>Average</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q1" value="Poor">
+                                    <span>Poor</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="question-item">
+                            <label class="question-label">
+                                2. How effective is the teaching methodology?
+                                <span class="required">*</span>
+                            </label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="q2" value="Excellent" required>
+                                    <span>Excellent</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q2" value="Good">
+                                    <span>Good</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q2" value="Average">
+                                    <span>Average</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q2" value="Poor">
+                                    <span>Poor</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="question-item">
+                            <label class="question-label">
+                                3. Are the study materials and resources adequate?
+                                <span class="required">*</span>
+                            </label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="q3" value="Excellent" required>
+                                    <span>Excellent</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q3" value="Good">
+                                    <span>Good</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q3" value="Average">
+                                    <span>Average</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q3" value="Poor">
+                                    <span>Poor</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="question-item">
+                            <label class="question-label">
+                                4. How accessible is the faculty for doubts and queries?
+                                <span class="required">*</span>
+                            </label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="q4" value="Excellent" required>
+                                    <span>Excellent</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q4" value="Good">
+                                    <span>Good</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q4" value="Average">
+                                    <span>Average</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q4" value="Poor">
+                                    <span>Poor</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="question-item">
+                            <label class="question-label">
+                                5. How fair and transparent is the assessment process?
+                                <span class="required">*</span>
+                            </label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="q5" value="Excellent" required>
+                                    <span>Excellent</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q5" value="Good">
+                                    <span>Good</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q5" value="Average">
+                                    <span>Average</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q5" value="Poor">
+                                    <span>Poor</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="question-item">
+                            <label class="question-label">
+                                6. Does the course content align with industry standards?
+                                <span class="required">*</span>
+                            </label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="q6" value="Excellent" required>
+                                    <span>Excellent</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q6" value="Good">
+                                    <span>Good</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q6" value="Average">
+                                    <span>Average</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q6" value="Poor">
+                                    <span>Poor</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Feedback Text -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        Your Feedback
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label for="feedbackText">
+                            Detailed Feedback <span class="required">*</span>
+                        </label>
+                        <textarea 
+                            id="feedbackText" 
+                            rows="8" 
+                            placeholder="Please share your detailed feedback here. Be specific about what you liked or what could be improved..."
+                            required
+                            minlength="20"></textarea>
+                        <div class="char-counter">
+                            <span id="charCount">0</span> / 500 characters
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-actions">
+                    <button type="reset" class="btn-reset">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="1 4 1 10 7 10"/>
+                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+                        </svg>
+                        Reset Form
+                    </button>
+                    <button type="submit" class="btn-submit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"/>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                        </svg>
+                        Submit Feedback
+                    </button>
+                </div>
+            </form>
+
+            <!-- Success Message -->
+            <div id="successMessage" class="success-modal" style="display: none;">
+                <div class="success-content">
+                    <div class="success-icon-large">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <h2>Feedback Submitted Successfully!</h2>
+                    <p>Thank you for your valuable feedback. Your response has been recorded and will be analyzed.</p>
+                    <div id="sentimentResult" class="sentiment-result-display"></div>
+                    <div class="success-actions">
+                        <button onclick="window.location.href='home.html'" class="btn-home">Go to Home</button>
+                        <button onclick="submitAnother()" class="btn-another">Submit Another</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="api.js"></script>
+    <script>
+        let currentUser = null;
+
+        // Check if user is logged in
+        window.onload = async function() {
+            currentUser = await requireAuth('student');
+            if (!currentUser) return;
+
+            // Pre-fill student name and USN
+            document.getElementById('studentName').textContent = currentUser.name || 'Student';
+            document.getElementById('studentNameField').value = currentUser.name || '';
+            document.getElementById('usn').value = currentUser.usn || '';
+            
+            // Make name and USN fields readonly
+            document.getElementById('studentNameField').setAttribute('readonly', true);
+            document.getElementById('usn').setAttribute('readonly', true);
+        };
+
+        // Rating Stars
+        const stars = document.querySelectorAll('.star');
+        const ratingInput = document.getElementById('rating');
+        const ratingLabel = document.getElementById('ratingLabel');
+        const ratingLabels = ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
+
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                const rating = this.getAttribute('data-rating');
+                ratingInput.value = rating;
+                updateStars(rating);
+                ratingLabel.textContent = ratingLabels[rating - 1];
+            });
+
+            star.addEventListener('mouseenter', function() {
+                const rating = this.getAttribute('data-rating');
+                updateStars(rating);
+            });
+        });
+
+        document.getElementById('ratingStars').addEventListener('mouseleave', function() {
+            const currentRating = ratingInput.value;
+            if (currentRating) {
+                updateStars(currentRating);
+            } else {
+                stars.forEach(star => star.classList.remove('active'));
+            }
+        });
+
+        function updateStars(rating) {
+            stars.forEach(star => {
+                if (star.getAttribute('data-rating') <= rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        // Character Counter
+        const feedbackText = document.getElementById('feedbackText');
+        const charCount = document.getElementById('charCount');
+
+        feedbackText.addEventListener('input', function() {
+            const count = this.value.length;
+            charCount.textContent = count;
+            
+            if (count > 500) {
+                this.value = this.value.substring(0, 500);
+                charCount.textContent = 500;
+            }
+        });
+
+        // Auto-tag category from questionnaire — picks the weakest area
+        function autoTagCategory() {
+            const scoreMap = { Excellent: 4, Good: 3, Average: 2, Poor: 1 };
+            const questions = [
+                { name: 'q1', category: 'Course Content' },
+                { name: 'q2', category: 'Teaching Methods' },
+                { name: 'q3', category: 'Study Materials' },
+                { name: 'q4', category: 'Teaching Quality' },
+                { name: 'q5', category: 'Assessment' },
+                { name: 'q6', category: 'Course Content' }
+            ];
+
+            let lowestScore = 5;
+            let lowestCategory = 'Teaching Quality';
+
+            questions.forEach(q => {
+                const checked = document.querySelector(`input[name="${q.name}"]:checked`);
+                if (checked) {
+                    const score = scoreMap[checked.value] || 3;
+                    if (score < lowestScore) {
+                        lowestScore = score;
+                        lowestCategory = q.category;
+                    }
+                }
+            });
+
+            return lowestCategory;
+        }
+
+        // Form Submission
+        document.getElementById('feedbackForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Validate rating
+            if (!ratingInput.value) {
+                alert('Please select a rating!');
+                return;
+            }
+
+            const submitBtn = this.querySelector('.btn-submit');
+            submitBtn.disabled = true;
+
+            // Build feedback payload
+            const sentiment = analyzeSentiment(feedbackText.value, parseInt(ratingInput.value));
+            const payload = {
+                studentName:    document.getElementById('studentNameField').value,
+                usn:            document.getElementById('usn').value.toUpperCase(),
+                subjectName:    document.getElementById('subjectName').value,
+                facultyName:    document.getElementById('facultyName').value,
+                rating:         parseInt(ratingInput.value),
+                category:       autoTagCategory(),
+                feedback:       feedbackText.value,
+                questionnaire: {
+                    q1: document.querySelector('input[name="q1"]:checked').value,
+                    q2: document.querySelector('input[name="q2"]:checked').value,
+                    q3: document.querySelector('input[name="q3"]:checked').value,
+                    q4: document.querySelector('input[name="q4"]:checked').value,
+                    q5: document.querySelector('input[name="q5"]:checked').value,
+                    q6: document.querySelector('input[name="q6"]:checked').value
+                },
+                sentiment:      sentiment.type,
+                sentimentScore: sentiment.score
+            };
+
+            try {
+                await api.post('/api/feedbacks', payload);
+                showSuccessMessage(sentiment);
+            } catch (err) {
+                alert('Failed to submit feedback: ' + err.message);
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Enhanced Rule-Based Sentiment Analysis
+        function analyzeSentiment(text, rating) {
+            // Comprehensive keyword dictionaries with weights
+            const positiveKeywords = {
+                // Strong positive (weight: 3)
+                excellent: 3, outstanding: 3, exceptional: 3, brilliant: 3, fantastic: 3,
+                amazing: 3, superb: 3, wonderful: 3, perfect: 3, incredible: 3,
+                
+                // Moderate positive (weight: 2)
+                good: 2, great: 2, helpful: 2, clear: 2, engaging: 2,
+                interesting: 2, effective: 2, knowledgeable: 2, supportive: 2, friendly: 2,
+                organized: 2, thorough: 2, dedicated: 2, passionate: 2, inspiring: 2,
+                
+                // Mild positive (weight: 1)
+                nice: 1, okay: 1, fine: 1, decent: 1, satisfactory: 1,
+                appreciate: 1, enjoy: 1, like: 1, understand: 1, learned: 1
+            };
+
+            const negativeKeywords = {
+                // Strong negative (weight: 3)
+                terrible: 3, horrible: 3, awful: 3, worst: 3, useless: 3,
+                pathetic: 3, disgusting: 3, unacceptable: 3, appalling: 3,
+                
+                // Moderate negative (weight: 2)
+                bad: 2, poor: 2, disappointing: 2, confusing: 2, unclear: 2,
+                boring: 2, difficult: 2, unhelpful: 2, disorganized: 2, unprepared: 2,
+                rude: 2, unfair: 2, biased: 2, ineffective: 2, waste: 2,
+                
+                // Mild negative (weight: 1)
+                lacking: 1, needs: 1, could: 1, should: 1, improvement: 1,
+                issue: 1, problem: 1, concern: 1, struggle: 1, hard: 1
+            };
+
+            // Negation words that flip sentiment
+            const negations = ['not', 'no', 'never', 'neither', 'nobody', 'nothing', 'nowhere', 
+                              'hardly', 'barely', 'scarcely', "don't", "doesn't", "didn't", 
+                              "won't", "wouldn't", "can't", "couldn't", "shouldn't"];
+
+            // Intensifiers that amplify sentiment
+            const intensifiers = {
+                very: 1.5, really: 1.5, extremely: 2, absolutely: 2, totally: 1.8,
+                completely: 1.8, highly: 1.5, incredibly: 2, remarkably: 1.8, quite: 1.3,
+                so: 1.4, too: 1.3, exceptionally: 2
+            };
+
+            const lowerText = text.toLowerCase();
+            const words = lowerText.split(/\s+/);
+            
+            let positiveScore = 0;
+            let negativeScore = 0;
+            let sentimentDetails = [];
+
+            // Analyze each word with context
+            for (let i = 0; i < words.length; i++) {
+                const word = words[i].replace(/[^\w]/g, ''); // Remove punctuation
+                
+                // Check for intensifiers
+                let intensifier = 1;
+                if (i > 0) {
+                    const prevWord = words[i - 1].replace(/[^\w]/g, '');
+                    if (intensifiers[prevWord]) {
+                        intensifier = intensifiers[prevWord];
+                    }
+                }
+
+                // Check for negations (look back 1-3 words)
+                let isNegated = false;
+                for (let j = Math.max(0, i - 3); j < i; j++) {
+                    const prevWord = words[j].replace(/[^\w]/g, '');
+                    if (negations.includes(prevWord)) {
+                        isNegated = true;
+                        break;
+                    }
+                }
+
+                // Calculate sentiment for this word
+                if (positiveKeywords[word]) {
+                    const weight = positiveKeywords[word] * intensifier;
+                    if (isNegated) {
+                        negativeScore += weight; // Flip to negative
+                        sentimentDetails.push({ word, type: 'negative (negated)', weight });
+                    } else {
+                        positiveScore += weight;
+                        sentimentDetails.push({ word, type: 'positive', weight });
+                    }
+                } else if (negativeKeywords[word]) {
+                    const weight = negativeKeywords[word] * intensifier;
+                    if (isNegated) {
+                        positiveScore += weight; // Flip to positive
+                        sentimentDetails.push({ word, type: 'positive (negated)', weight });
+                    } else {
+                        negativeScore += weight;
+                        sentimentDetails.push({ word, type: 'negative', weight });
+                    }
+                }
+            }
+
+            // Rating-based scoring (weighted heavily)
+            const ratingWeight = 15; // Increased weight for rating
+            let ratingScore = 0;
+            
+            if (rating === 5) ratingScore = 2 * ratingWeight;      // Excellent
+            else if (rating === 4) ratingScore = 1 * ratingWeight; // Good
+            else if (rating === 3) ratingScore = 0;                // Neutral
+            else if (rating === 2) ratingScore = -1 * ratingWeight; // Poor
+            else if (rating === 1) ratingScore = -2 * ratingWeight; // Very Poor
+
+            // Text length consideration (longer text = more confident)
+            const textLength = words.length;
+            const lengthFactor = Math.min(1, textLength / 20); // Max confidence at 20+ words
+
+            // Calculate final scores
+            const textSentimentScore = positiveScore - negativeScore;
+            const totalScore = ratingScore + (textSentimentScore * lengthFactor);
+
+            // Determine sentiment type and confidence score
+            let type, score, confidence;
+
+            if (totalScore > 15) {
+                type = 'positive';
+                confidence = Math.min(100, 70 + (totalScore - 15) * 2);
+            } else if (totalScore < -15) {
+                type = 'negative';
+                confidence = Math.min(100, 70 + Math.abs(totalScore + 15) * 2);
+            } else {
+                type = 'neutral';
+                confidence = 50 + Math.abs(totalScore);
+            }
+
+            // Normalize confidence score
+            score = Math.round(Math.min(100, Math.max(0, confidence)));
+
+            // Log analysis details (for debugging)
+            console.log('Sentiment Analysis:', {
+                text: text.substring(0, 50) + '...',
+                rating,
+                positiveScore,
+                negativeScore,
+                ratingScore,
+                totalScore,
+                type,
+                score,
+                details: sentimentDetails
+            });
+
+            return { type, score };
+        }
+
+        function showSuccessMessage(sentiment) {
+            const sentimentColors = {
+                positive: '#4caf50',
+                neutral: '#ff9800',
+                negative: '#f44336'
+            };
+
+            const sentimentEmojis = {
+                positive: '😊',
+                neutral: '😐',
+                negative: '😞'
+            };
+
+            document.getElementById('sentimentResult').innerHTML = `
+                <div class="sentiment-badge-result" style="background: ${sentimentColors[sentiment.type]}20; border: 2px solid ${sentimentColors[sentiment.type]};">
+                    <span class="sentiment-emoji">${sentimentEmojis[sentiment.type]}</span>
+                    <div>
+                        <div class="sentiment-type">${sentiment.type.toUpperCase()}</div>
+                        <div class="sentiment-score">Confidence: ${sentiment.score}%</div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('successMessage').style.display = 'flex';
+        }
+
+        function submitAnother() {
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('feedbackForm').reset();
+            stars.forEach(star => star.classList.remove('active'));
+            ratingInput.value = '';
+            ratingLabel.textContent = 'Click to rate';
+            charCount.textContent = '0';
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
