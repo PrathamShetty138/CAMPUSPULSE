@@ -156,7 +156,7 @@ Implemented in `feedback.html` (client-side, runs before submission):
 ---
 
 ## Project Info
-
+CampusPulse - IWP Mini Project
 - **Course:** Internet and Web Programming (IWP)
 - **Type:** Mini Project
 - **Year:** 2026
